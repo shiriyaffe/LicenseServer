@@ -17,5 +17,14 @@ namespace LicenseServer.Controllers
         {
             this.context = context;
         }
+
+        [Route("SayHello")]
+        [HttpGet]
+        public string SayHello()
+        {
+            return "Hello World";
+        }
     }
+
+    
 }
