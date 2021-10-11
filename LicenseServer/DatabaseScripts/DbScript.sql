@@ -1,199 +1,184 @@
-﻿        Use master
-        Create Database LicenseDB
-        Go
+﻿     Use master
+Create Database LicenseDB
+Go
 
-        Use LicenseDB
-        Go
+Use LicenseDB
+Go
+
+CREATE TABLE Gearbox(
+    GearboxID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+    Type NVARCHAR(50) NOT NULL
+);
+
+CREATE TABLE LicenseType(
+    LicenseTypeID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+    LType INT NOT NULL,
+    Description NVARCHAR(50) NOT NULL
+);
+
+CREATE TABLE City(
+    CityID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+    CityName NVARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Area(
+    AreaID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+    AreaName NVARCHAR(50) NOT NULL
+);
+
+CREATE TABLE CitiesInArea(
+    CityID INT NOT NULL,
+	CONSTRAINT FK_CitiesInAreaCity FOREIGN KEY(CityID) REFERENCES City(CityID),
+    AreaID INT NOT NULL,
+	CONSTRAINT FK_CitiesInAreaArea FOREIGN KEY(AreaID) REFERENCES Area(AreaID),
+	CONSTRAINT PK_CitiesInArea PRIMARY KEY (CityID, AreaID)
+);
+
+CREATE TABLE Rate(
+    RateID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+    RateMeaning INT NOT NULL
+);
+
+CREATE TABLE Review(
+    ReviewID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+    Content NVARCHAR(50) NOT NULL
+);
 
 
-      
+CREATE TABLE Gender(
+    GenderID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+    GenderType NVARCHAR(50) NOT NULL
+);
 
-CREATE TABLE Student(
-    StudentID INT NOT NULL,
-    SName NVARCHAR(255) NOT NULL,
-    Email NVARCHAR(255) NOT NULL,
-    Pass NVARCHAR(255) NOT NULL,
-    PhoneNumber NVARCHAR(255) NOT NULL,
-    GenderID NVARCHAR(255) NOT NULL,
+CREATE TABLE EStatus(
+    StatusID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+    StatusMeaning NVARCHAR(50) NOT NULL
+);
+
+
+CREATE TABLE LessonLength(
+    LessonLengthID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+    SLength INT NOT NULL
+);
+
+CREATE TABLE AppAdmin(
+    AdminID INT PRIMARY KEY NOT NULL,
+    AEmail NVARCHAR(50) NOT NULL,
+    APass NVARCHAR(50) NOT NULL
+);
+
+
+CREATE TABLE SchoolManager(
+    SManagerID INT PRIMARY KEY NOT NULL,
+    SMName NVARCHAR(50) NOT NULL,
+    Email NVARCHAR(50) NOT NULL,
+    Pass NVARCHAR(50) NOT NULL,
+    PhoneNumber NVARCHAR(50) NOT NULL,
+    GenderID INT NOT NULL,
+	CONSTRAINT FK_SchoolManagerGender FOREIGN KEY(GenderID) REFERENCES Gender(GenderID),
     Birthday DATETIME NOT NULL,
-    CityID NVARCHAR(255) NOT NULL,
-    Adrees NVARCHAR(255) NOT NULL,
-    GearboxID NVARCHAR(255) NOT NULL,
-    LisenceTypeID NCHAR(255) NOT NULL,
-    TeacherGender NVARCHAR(255) NULL,
+    DrivingSchool NVARCHAR(50) NOT NULL,
+    AreaID INT NOT NULL,
+	CONSTRAINT FK_SchoolManagerArea FOREIGN KEY(AreaID) REFERENCES Area(AreaID),
+    EstablishmentYear INT NOT NULL,
+    NumOfTeachers INT NOT NULL,
+    RegistrationDate DATE NOT NULL
+);
+CREATE UNIQUE INDEX schoolmanager_email_unique ON
+    SchoolManager(Email);
+
+CREATE TABLE Instructor(
+    InstructorID INT PRIMARY KEY NOT NULL,
+    IName NVARCHAR(50) NOT NULL,
+    Email NVARCHAR(50) NOT NULL,
+    Pass NVARCHAR(10) NOT NULL,
+    PhoneNumber NVARCHAR(50) NOT NULL,
+    GenderID INT NOT NULL,
+	CONSTRAINT FK_InstructorGender FOREIGN KEY(GenderID) REFERENCES Gender(GenderID),
+    Birthday DATETIME NOT NULL,
+    AreaID INT NOT NULL,
+	CONSTRAINT FK_InstructorArea FOREIGN KEY(AreaID) REFERENCES Area(AreaID),
+    GearboxID INT NOT NULL,
+	CONSTRAINT FK_InstructorGearbox FOREIGN KEY(GearboxID) REFERENCES Gearbox(GearboxID),
+    LicenseTypeID INT NOT NULL,
+	CONSTRAINT FK_InstructorLicense FOREIGN KEY(LicenseTypeID) REFERENCES LicenseType(LicenseTypeID),
+    LessonLengthID INT NOT NULL,
+	CONSTRAINT FK_EnrollmentRequestsLessonLength FOREIGN KEY(LessonLengthID) REFERENCES LessonLength(LessonLengthID),
+    Price INT NOT NULL,
+    TimeRange BIGINT NOT NULL,
+    DrivingSchool NVARCHAR(50) NOT NULL,
+    SchoolManagerID INT NOT NULL,
+	CONSTRAINT FK_InstructorSchoolManager FOREIGN KEY(SchoolManagerID) REFERENCES SchoolManager(SManagerID),
+    RateID INT NOT NULL,
+	CONSTRAINT FK_InstructorRate FOREIGN KEY(RateID) REFERENCES Rate(RateID),
+    RegistrationDate DATE NOT NULL
+);
+CREATE UNIQUE INDEX instructor_email_unique ON
+    Instructor(Email);
+
+	CREATE TABLE Student(
+    StudentID INT PRIMARY KEY NOT NULL,
+    SName NVARCHAR(50) NOT NULL,
+    Email NVARCHAR(50) NOT NULL,
+    Pass NVARCHAR(10) NOT NULL,
+    PhoneNumber NVARCHAR(50) NOT NULL,
+    GenderID INT NOT NULL,
+	CONSTRAINT FK_StudentGender FOREIGN KEY (GenderID) REFERENCES Gender(GenderID),
+    Birthday DATETIME NOT NULL,
+    CityID INT NOT NULL,
+	CONSTRAINT FK_StudentCity FOREIGN KEY (CityID) REFERENCES City(CityID),
+    Adrees NVARCHAR(50) NOT NULL,
+    GearboxID INT NOT NULL,
+	CONSTRAINT FK_StudentGearbox FOREIGN KEY (GearboxID) REFERENCES Gearbox(GearboxID),
+    LicenseTypeID INT NOT NULL,
+	CONSTRAINT FK_StudentLicenseType FOREIGN KEY (LicenseTypeID) REFERENCES LicenseType(LicenseTypeID),
+    TeacherGender NVARCHAR(50) NULL,
     LowestPrice INT NOT NULL,
     HighestPrice INT NOT NULL,
     InstructorID INT NULL,
-    ReviewID INT NOT NULL,
-    LessonsCount INT NOT NULL
+	CONSTRAINT FK_StudentInstructor FOREIGN KEY (InstructorID) REFERENCES Instructor(InstructorID),
+    LessonsCount INT NOT NULL,
+    RegistrationDate DATE NOT NULL
 );
-ALTER TABLE
-    Student ADD CONSTRAINT student_studentid_primary PRIMARY KEY(StudentID);
 CREATE UNIQUE INDEX student_email_unique ON
     Student(Email);
-CREATE TABLE Instructor(
-    InstructorID INT NOT NULL,
-    IName NVARCHAR(255) NOT NULL,
-    Email NVARCHAR(255) NOT NULL,
-    Pass NVARCHAR(255) NOT NULL,
-    PhoneNumber NVARCHAR(255) NOT NULL,
-    GenderID NVARCHAR(255) NOT NULL,
-    Birthday DATETIME NOT NULL,
-    AreaID NVARCHAR(255) NOT NULL,
-    GearboxID NVARCHAR(255) NOT NULL,
-    LisenceTypeID NCHAR(255) NOT NULL,
-    LessonLengthID INT NOT NULL,
-    Price INT NOT NULL,
-    TimeRange BIGINT NOT NULL,
-    DrivingSchool NVARCHAR(255) NOT NULL,
-    SchoolManagerID INT NOT NULL,
-    RateID INT NOT NULL,
-    ReviewID INT NOT NULL
-);
-ALTER TABLE
-    Instructor ADD CONSTRAINT instructor_instructorid_primary PRIMARY KEY(InstructorID);
-CREATE UNIQUE INDEX instructor_email_unique ON
-    Instructor(Email);
-CREATE TABLE SchoolManager(
-    SManagerID INT NOT NULL,
-    SMName NVARCHAR(255) NOT NULL,
-    Email NVARCHAR(255) NOT NULL,
-    Pass NVARCHAR(255) NOT NULL,
-    PhoneNumber NVARCHAR(255) NOT NULL,
-    GenderID NVARCHAR(255) NOT NULL,
-    Birthday DATETIME NOT NULL,
-    DrivingSchool NVARCHAR(255) NOT NULL,
-    AreaID NVARCHAR(255) NOT NULL,
-    EstablishmentYear INT NOT NULL,
-    NumOfTeachers INT NOT NULL
-);
-ALTER TABLE
-    SchoolManager ADD CONSTRAINT schoolmanager_smanagerid_primary PRIMARY KEY(SManagerID);
-CREATE UNIQUE INDEX schoolmanager_email_unique ON
-    SchoolManager(Email);
+
 CREATE TABLE Lesson(
-    LessonID INT NOT NULL,
+    LessonID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
     LTime TIME NOT NULL,
     LDate DATE NOT NULL,
-    LDay NVARCHAR(255) NOT NULL,
+    LDay NVARCHAR(50) NOT NULL,
     IsAvailable BIT NOT NULL,
     StuudentID INT NULL,
+	CONSTRAINT FK_LessonStudent FOREIGN KEY(StuudentID) REFERENCES Student(StudentID),
     IsPaid BIT NOT NULL,
     HasDone BIT NOT NULL,
-    InstructorID INT NOT NULL
+    InstructorID INT NOT NULL,
+	CONSTRAINT FK_LessonInstructor FOREIGN KEY(InstructorID) REFERENCES Instructor(InstructorID),
+	ReviewID INT NOT NULL,
+	CONSTRAINT FK_LessonReview FOREIGN KEY(ReviewID) REFERENCES Review(ReviewID),
 );
-ALTER TABLE
-    "Lesson" ADD CONSTRAINT "lesson_lessonid_primary" PRIMARY KEY("LessonID");
-CREATE TABLE "Gearbox"(
-    "GearboxID" INT NOT NULL,
-    "Type" NVARCHAR(255) NOT NULL
+
+CREATE TABLE EnrollmentRequests(
+    EnrollmentID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+    LessonID INT NOT NULL,
+	CONSTRAINT FK_EnrollmentRequestsLesson FOREIGN KEY(LessonID) REFERENCES Lesson(LessonID),
+    StatusID INT NOT NULL,
+	CONSTRAINT FK_EnrollmentRequestsEStatus FOREIGN KEY(StatusID) REFERENCES EStatus(StatusID),
+    StudentID INT NOT NULL,
+	CONSTRAINT FK_EnrollmentRequestsStudent FOREIGN KEY(StudentID) REFERENCES Student(StudentID)
 );
-ALTER TABLE
-    "Gearbox" ADD CONSTRAINT "gearbox_gearboxid_primary" PRIMARY KEY("GearboxID");
-CREATE TABLE "LisenceType"(
-    "LisenceTypeID" INT NOT NULL,
-    "LType" INT NOT NULL,
-    "Description" NVARCHAR(255) NOT NULL
+
+CREATE TABLE InstructorReviews(
+    ReviewID INT NOT NULL,
+	CONSTRAINT FK_InstructorReviewsReview FOREIGN KEY(ReviewID) REFERENCES Review(ReviewID),
+    StudentID INT NOT NULL,
+	CONSTRAINT FK_InstructorReviewsStudent FOREIGN KEY(StudentID) REFERENCES Student(StudentID),
+	InstructorID INT NOT NULL,
+	CONSTRAINT FK_InstructorReviewsInstructor FOREIGN KEY(InstructorID) REFERENCES Instructor(InstructorID),
+	TimeReview DATETIME NOT NULL
 );
-ALTER TABLE
-    "LisenceType" ADD CONSTRAINT "lisencetype_lisencetypeid_primary" PRIMARY KEY("LisenceTypeID");
-CREATE TABLE "City"(
-    "CityID" INT NOT NULL,
-    "CityName" NVARCHAR(255) NOT NULL
-);
-ALTER TABLE
-    "City" ADD CONSTRAINT "city_cityid_primary" PRIMARY KEY("CityID");
-CREATE TABLE "Area"(
-    "AreaID" INT NOT NULL,
-    "AreaName" NVARCHAR(255) NOT NULL
-);
-ALTER TABLE
-    "Area" ADD CONSTRAINT "area_areaid_primary" PRIMARY KEY("AreaID");
-CREATE TABLE "CitiesInArea"(
-    "CityID" INT NOT NULL,
-    "AreaID" INT NOT NULL
-);
-ALTER TABLE
-    "CitiesInArea" ADD CONSTRAINT "citiesinarea_cityid_primary" PRIMARY KEY("CityID");
-ALTER TABLE
-    "CitiesInArea" ADD CONSTRAINT "citiesinarea_areaid_primary" PRIMARY KEY("AreaID");
-CREATE TABLE "Rate"(
-    "RateID" INT NOT NULL,
-    "RateMeaning" INT NOT NULL
-);
-ALTER TABLE
-    "Rate" ADD CONSTRAINT "rate_rateid_primary" PRIMARY KEY("RateID");
-CREATE TABLE "Review"(
-    "ReviewID" INT NOT NULL,
-    "Content" NVARCHAR(255) NOT NULL
-);
-ALTER TABLE
-    "Review" ADD CONSTRAINT "review_reviewid_primary" PRIMARY KEY("ReviewID");
-CREATE TABLE "Gender"(
-    "GenderID" INT NOT NULL,
-    "GenderType" NVARCHAR(255) NOT NULL
-);
-ALTER TABLE
-    "Gender" ADD CONSTRAINT "gender_genderid_primary" PRIMARY KEY("GenderID");
-CREATE TABLE "EnrollmentRequests"(
-    "EnrollmentID" INT NOT NULL,
-    "LessonID" INT NOT NULL,
-    "StatusID" NVARCHAR(255) NOT NULL,
-    "StudentID" INT NOT NULL
-);
-ALTER TABLE
-    "EnrollmentRequests" ADD CONSTRAINT "enrollmentrequests_enrollmentid_primary" PRIMARY KEY("EnrollmentID");
-CREATE TABLE "Status"(
-    "StatusID" INT NOT NULL,
-    "StatusMeaning" NVARCHAR(255) NOT NULL
-);
-ALTER TABLE
-    "Status" ADD CONSTRAINT "status_statusid_primary" PRIMARY KEY("StatusID");
-CREATE TABLE "LessonLength"(
-    "LessonLengthID" INT NOT NULL,
-    "Length (min)" INT NOT NULL
-);
-ALTER TABLE
-    "LessonLength" ADD CONSTRAINT "lessonlength_lessonlengthid_primary" PRIMARY KEY("LessonLengthID");
-ALTER TABLE
-    "Student" ADD CONSTRAINT "student_genderid_foreign" FOREIGN KEY("GenderID") REFERENCES "Gender"("GenderID");
-ALTER TABLE
-    "Student" ADD CONSTRAINT "student_cityid_foreign" FOREIGN KEY("CityID") REFERENCES "City"("CityID");
-ALTER TABLE
-    "Student" ADD CONSTRAINT "student_gearboxid_foreign" FOREIGN KEY("GearboxID") REFERENCES "Gearbox"("GearboxID");
-ALTER TABLE
-    "Student" ADD CONSTRAINT "student_lisencetypeid_foreign" FOREIGN KEY("LisenceTypeID") REFERENCES "LisenceType"("LisenceTypeID");
-ALTER TABLE
-    "Student" ADD CONSTRAINT "student_instructorid_foreign" FOREIGN KEY("InstructorID") REFERENCES "Instructor"("InstructorID");
-ALTER TABLE
-    "Instructor" ADD CONSTRAINT "instructor_genderid_foreign" FOREIGN KEY("GenderID") REFERENCES "Gender"("GenderID");
-ALTER TABLE
-    "Instructor" ADD CONSTRAINT "instructor_areaid_foreign" FOREIGN KEY("AreaID") REFERENCES "Area"("AreaID");
-ALTER TABLE
-    "Instructor" ADD CONSTRAINT "instructor_gearboxid_foreign" FOREIGN KEY("GearboxID") REFERENCES "Gearbox"("GearboxID");
-ALTER TABLE
-    "Instructor" ADD CONSTRAINT "instructor_lisencetypeid_foreign" FOREIGN KEY("LisenceTypeID") REFERENCES "LisenceType"("LisenceTypeID");
-ALTER TABLE
-    "Instructor" ADD CONSTRAINT "instructor_schoolmanagerid_foreign" FOREIGN KEY("SchoolManagerID") REFERENCES "SchoolManager"("SManagerID");
-ALTER TABLE
-    "Instructor" ADD CONSTRAINT "instructor_reviewid_foreign" FOREIGN KEY("ReviewID") REFERENCES "Review"("ReviewID");
-ALTER TABLE
-    "SchoolManager" ADD CONSTRAINT "schoolmanager_genderid_foreign" FOREIGN KEY("GenderID") REFERENCES "Gender"("GenderID");
-ALTER TABLE
-    "SchoolManager" ADD CONSTRAINT "schoolmanager_areaid_foreign" FOREIGN KEY("AreaID") REFERENCES "Area"("AreaID");
-ALTER TABLE
-    "Lesson" ADD CONSTRAINT "lesson_stuudentid_foreign" FOREIGN KEY("StuudentID") REFERENCES "Student"("StudentID");
-ALTER TABLE
-    "Lesson" ADD CONSTRAINT "lesson_instructorid_foreign" FOREIGN KEY("InstructorID") REFERENCES "Instructor"("InstructorID");
-ALTER TABLE
-    "Instructor" ADD CONSTRAINT "instructor_rateid_foreign" FOREIGN KEY("RateID") REFERENCES "Rate"("RateID");
-ALTER TABLE
-    "Student" ADD CONSTRAINT "student_reviewid_foreign" FOREIGN KEY("ReviewID") REFERENCES "Review"("ReviewID");
-ALTER TABLE
-    "EnrollmentRequests" ADD CONSTRAINT "enrollmentrequests_lessonid_foreign" FOREIGN KEY("LessonID") REFERENCES "Lesson"("LessonID");
-ALTER TABLE
-    "EnrollmentRequests" ADD CONSTRAINT "enrollmentrequests_studentid_foreign" FOREIGN KEY("StudentID") REFERENCES "Student"("StudentID");
-ALTER TABLE
-    "EnrollmentRequests" ADD CONSTRAINT "enrollmentrequests_statusid_foreign" FOREIGN KEY("StatusID") REFERENCES "Status"("StatusID");
-ALTER TABLE
-    "Instructor" ADD CONSTRAINT "instructor_lessonlengthid_foreign" FOREIGN KEY("LessonLengthID") REFERENCES "LessonLength"("LessonLengthID");
+
+ALTER TABLE LicenseType
+ALTER COLUMN Description NVARCHAR(255)
+Go
