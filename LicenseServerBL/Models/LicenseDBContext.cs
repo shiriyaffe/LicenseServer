@@ -50,7 +50,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<AppAdmin>(entity =>
             {
                 entity.HasKey(e => e.AdminId)
-                    .HasName("PK__AppAdmin__719FE4E81716248E");
+                    .HasName("PK__AppAdmin__719FE4E82DFEDE12");
 
                 entity.ToTable("AppAdmin");
 
@@ -99,15 +99,23 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<EnrollmentRequest>(entity =>
             {
                 entity.HasKey(e => e.EnrollmentId)
-                    .HasName("PK__Enrollme__7F6877FB88F4D63A");
+                    .HasName("PK__Enrollme__7F6877FB3B6FD662");
 
                 entity.Property(e => e.EnrollmentId).HasColumnName("EnrollmentID");
+
+                entity.Property(e => e.InstructorId).HasColumnName("InstructorID");
 
                 entity.Property(e => e.LessonId).HasColumnName("LessonID");
 
                 entity.Property(e => e.StatusId).HasColumnName("StatusID");
 
                 entity.Property(e => e.StudentId).HasColumnName("StudentID");
+
+                entity.HasOne(d => d.Instructor)
+                    .WithMany(p => p.EnrollmentRequests)
+                    .HasForeignKey(d => d.InstructorId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_EnrollmentRequestsInstructor");
 
                 entity.HasOne(d => d.Lesson)
                     .WithMany(p => p.EnrollmentRequests)
@@ -131,7 +139,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<Estatus>(entity =>
             {
                 entity.HasKey(e => e.StatusId)
-                    .HasName("PK__EStatus__C8EE2043C893372E");
+                    .HasName("PK__EStatus__C8EE20432C554167");
 
                 entity.ToTable("EStatus");
 
@@ -378,7 +386,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<SchoolManager>(entity =>
             {
                 entity.HasKey(e => e.SmanagerId)
-                    .HasName("PK__SchoolMa__A19B238855A2826B");
+                    .HasName("PK__SchoolMa__A19B2388D2D59A10");
 
                 entity.ToTable("SchoolManager");
 

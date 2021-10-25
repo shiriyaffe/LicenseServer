@@ -43,7 +43,6 @@ namespace LicenseServer.Controllers
             }
             else
             {
-
                 Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
                 return null;
             }
