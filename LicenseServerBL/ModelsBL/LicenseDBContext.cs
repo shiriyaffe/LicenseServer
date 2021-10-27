@@ -26,8 +26,7 @@ namespace LicenseServerBL.Models
                           Include(i => i.Students).
                           Where(u => u.Email == email && u.Pass == pass).FirstOrDefault();
             }
-
-            if (user == null)
+            else if (user == null)
             {
                 user = this.SchoolManagers.
                           Include(sm => sm.Instructors).
@@ -35,6 +34,19 @@ namespace LicenseServerBL.Models
             }
 
             return user;
+        }
+
+        public void AddStudent(Student student)
+        {
+            try
+            {
+                this.Students.Add(student);
+                this.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
     }
 }

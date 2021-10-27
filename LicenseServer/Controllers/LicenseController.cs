@@ -47,7 +47,27 @@ namespace LicenseServer.Controllers
                 return null;
             }
         }
+
+        [Route("SignUpStudent")]
+        [HttpPost]
+        public Student SignUpStudent([FromQuery] Student student)
+        {
+            if(student != null)
+            {
+                this.context.AddStudent(student);
+                HttpContext.Session.SetObject("theUser", student);
+                Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                //Important! Due to the Lazy Loading, the user will be returned with all of its contects!!
+                return student;
+            }
+            else
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                return null;
+            }
+        }
+        }
     }
 
     
-}
+
