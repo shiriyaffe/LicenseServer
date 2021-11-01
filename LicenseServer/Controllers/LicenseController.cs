@@ -66,8 +66,23 @@ namespace LicenseServer.Controllers
                 return null;
             }
         }
+
+        [Route("GetLookups")]
+        [HttpGet]
+        public DTO.LookupTables GetLookups()
+        {
+            DTO.LookupTables tables = new DTO.LookupTables()
+            {
+                Cities = context.Cities.ToList(),
+                Areas = context.Areas.ToList(),
+                GearBoxes = context.Gearboxes.ToList(),
+                Genders = context.Genders.ToList(),
+                LicenseTypes = context.LicenseTypes.ToList()
+            };
+            return tables;
         }
     }
+}
 
     
 
