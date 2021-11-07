@@ -161,7 +161,9 @@ CREATE TABLE EnrollmentRequests(
     StatusID INT NOT NULL,
 	CONSTRAINT FK_EnrollmentRequestsEStatus FOREIGN KEY(StatusID) REFERENCES EStatus(StatusID),
     StudentID INT NOT NULL,
-	CONSTRAINT FK_EnrollmentRequestsStudent FOREIGN KEY(StudentID) REFERENCES Student(StudentID)
+	CONSTRAINT FK_EnrollmentRequestsStudent FOREIGN KEY(StudentID) REFERENCES Student(StudentID),
+	InstructorID INT NOT NULL,
+	CONSTRAINT FK_EnrollmentRequestsInstructor FOREIGN KEY(InstructorID) REFERENCES Instructor(InstructorID)
 );
 
 CREATE TABLE InstructorReviews(
@@ -181,6 +183,7 @@ VALUES (N'אוטומטי');
 INSERT INTO Gearbox(Type)
 VALUES (N'ידני');
 
+
 INSERT INTO Gender(GenderType)
 VALUES (N'נקבה');
 
@@ -190,6 +193,7 @@ VALUES (N'זכר');
 INSERT INTO Gender(GenderType)
 VALUES (N'אחר');
 
+
 INSERT INTO LessonLength(SLength)
 VALUES (N'30');
 
@@ -198,6 +202,7 @@ VALUES (N'40');
 
 INSERT INTO LessonLength(SLength)
 VALUES (N'60');
+
 
 INSERT INTO LicenseType([LType], [Description])
 VALUES (N'A', N'רישיון לרכב דו גלגלי ללא הגבלת הספק או נפח');
@@ -210,6 +215,7 @@ VALUES (N'C', N'רישיון למשאית ללא הגבלת משקל');
 
 INSERT INTO LicenseType([LType], [Description])
 VALUES (N'D', N'רישיון לאוטובוס');
+
 
 INSERT INTO Rate(RateMeaning)
 VALUES (N'גרוע');
@@ -226,6 +232,7 @@ VALUES (N'אחלה');
 INSERT INTO Rate(RateMeaning)
 VALUES (N'מעולה');
 
+
 INSERT INTO Area(AreaName)
 VALUES (N'צפון');
 
@@ -234,6 +241,7 @@ VALUES (N'דרום');
 
 INSERT INTO Area(AreaName)
 VALUES (N'מרכז');
+
 
 INSERT INTO City([CityName], [AreaID])
 VALUES (N'ראשון לציון',3);
