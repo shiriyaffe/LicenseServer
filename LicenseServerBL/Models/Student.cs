@@ -21,11 +21,10 @@ namespace LicenseServerBL.Models
         public int GenderId { get; set; }
         public DateTime Birthday { get; set; }
         public int CityId { get; set; }
-        public string Adrees { get; set; }
+        public string Saddress { get; set; }
         public int GearboxId { get; set; }
         public int LicenseTypeId { get; set; }
-        public string TeacherGender { get; set; }
-        public int LowestPrice { get; set; }
+        public int? TeacherGender { get; set; }
         public int HighestPrice { get; set; }
         public int? InstructorId { get; set; }
         public int LessonsCount { get; set; }

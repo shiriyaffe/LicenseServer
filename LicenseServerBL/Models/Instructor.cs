@@ -28,7 +28,7 @@ namespace LicenseServerBL.Models
         public int Price { get; set; }
         public long TimeRange { get; set; }
         public string DrivingSchool { get; set; }
-        public int SchoolManagerId { get; set; }
+        public int? SchoolManagerId { get; set; }
         public int RateId { get; set; }
         public DateTime RegistrationDate { get; set; }
 

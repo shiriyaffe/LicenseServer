@@ -50,7 +50,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<AppAdmin>(entity =>
             {
                 entity.HasKey(e => e.AdminId)
-                    .HasName("PK__AppAdmin__719FE4E82DFEDE12");
+                    .HasName("PK__AppAdmin__719FE4E8C8C85542");
 
                 entity.ToTable("AppAdmin");
 
@@ -99,7 +99,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<EnrollmentRequest>(entity =>
             {
                 entity.HasKey(e => e.EnrollmentId)
-                    .HasName("PK__Enrollme__7F6877FB3B6FD662");
+                    .HasName("PK__Enrollme__7F6877FB5741FE4B");
 
                 entity.Property(e => e.EnrollmentId).HasColumnName("EnrollmentID");
 
@@ -139,7 +139,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<Estatus>(entity =>
             {
                 entity.HasKey(e => e.StatusId)
-                    .HasName("PK__EStatus__C8EE20432C554167");
+                    .HasName("PK__EStatus__C8EE204363161485");
 
                 entity.ToTable("EStatus");
 
@@ -259,7 +259,6 @@ namespace LicenseServerBL.Models
                 entity.HasOne(d => d.SchoolManager)
                     .WithMany(p => p.Instructors)
                     .HasForeignKey(d => d.SchoolManagerId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_InstructorSchoolManager");
             });
 
@@ -386,7 +385,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<SchoolManager>(entity =>
             {
                 entity.HasKey(e => e.SmanagerId)
-                    .HasName("PK__SchoolMa__A19B2388D2D59A10");
+                    .HasName("PK__SchoolMa__A19B2388B8A9CA8E");
 
                 entity.ToTable("SchoolManager");
 
@@ -446,10 +445,6 @@ namespace LicenseServerBL.Models
 
                 entity.Property(e => e.StudentId).HasColumnName("StudentID");
 
-                entity.Property(e => e.Adrees)
-                    .IsRequired()
-                    .HasMaxLength(255);
-
                 entity.Property(e => e.Birthday).HasColumnType("datetime");
 
                 entity.Property(e => e.CityId).HasColumnName("CityID");
@@ -476,12 +471,15 @@ namespace LicenseServerBL.Models
 
                 entity.Property(e => e.RegistrationDate).HasColumnType("date");
 
+                entity.Property(e => e.Saddress)
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .HasColumnName("SAddress");
+
                 entity.Property(e => e.Sname)
                     .IsRequired()
                     .HasMaxLength(255)
                     .HasColumnName("SName");
-
-                entity.Property(e => e.TeacherGender).HasMaxLength(255);
 
                 entity.HasOne(d => d.City)
                     .WithMany(p => p.Students)

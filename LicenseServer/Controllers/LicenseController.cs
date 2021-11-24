@@ -50,7 +50,7 @@ namespace LicenseServer.Controllers
 
         [Route("SignUpStudent")]
         [HttpPost]
-        public Student SignUpStudent([FromQuery] Student student)
+        public Student SignUpStudent([FromBody] Student student)
         {
             if(student != null)
             {
