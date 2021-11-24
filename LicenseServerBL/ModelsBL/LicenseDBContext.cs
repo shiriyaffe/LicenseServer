@@ -36,16 +36,18 @@ namespace LicenseServerBL.Models
             return user;
         }
 
-        public void AddStudent(Student student)
+        public bool AddStudent(Student student)
         {
             try
             {
                 this.Students.Add(student);
                 this.SaveChanges();
+                return true;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                return false;
             }
         }
     }

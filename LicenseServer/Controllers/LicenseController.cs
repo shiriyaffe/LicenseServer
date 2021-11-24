@@ -54,11 +54,16 @@ namespace LicenseServer.Controllers
         {
             if(student != null)
             {
-                this.context.AddStudent(student);
-                HttpContext.Session.SetObject("theUser", student);
-                Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
-                //Important! Due to the Lazy Loading, the user will be returned with all of its contects!!
-                return student;
+                bool signedUp = this.context.AddStudent(student);
+                if (signedUp)
+                {
+                    HttpContext.Session.SetObject("theUser", student);
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                    //Important! Due to the Lazy Loading, the user will be returned with all of its contects!!
+                    return student;
+                }
+                else
+                    return null;
             }
             else
             {
