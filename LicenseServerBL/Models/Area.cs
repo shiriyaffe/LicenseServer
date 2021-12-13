@@ -10,15 +10,15 @@ namespace LicenseServerBL.Models
         public Area()
         {
             Cities = new HashSet<City>();
+            DrivingSchools = new HashSet<DrivingSchool>();
             Instructors = new HashSet<Instructor>();
-            SchoolManagers = new HashSet<SchoolManager>();
         }
 
         public int AreaId { get; set; }
         public string AreaName { get; set; }
 
         public virtual ICollection<City> Cities { get; set; }
+        public virtual ICollection<DrivingSchool> DrivingSchools { get; set; }
         public virtual ICollection<Instructor> Instructors { get; set; }
-        public virtual ICollection<SchoolManager> SchoolManagers { get; set; }
     }
 }

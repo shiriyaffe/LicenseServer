@@ -71,13 +71,10 @@ CREATE TABLE SchoolManager(
     PhoneNumber NVARCHAR(10) NOT NULL,
     GenderID INT NOT NULL,
 	CONSTRAINT FK_SchoolManagerGender FOREIGN KEY(GenderID) REFERENCES Gender(GenderID),
-    Birthday DATETIME,
-    DrivingSchool NVARCHAR(255) NOT NULL,
-    AreaID INT NOT NULL,
-	CONSTRAINT FK_SchoolManagerArea FOREIGN KEY(AreaID) REFERENCES Area(AreaID),
-    EstablishmentYear INT NOT NULL,
-    NumOfTeachers INT NOT NULL,
-    RegistrationDate DATE NOT NULL
+    Birthday DATE,
+    SchoolID INT,
+    CONSTRAINT FK_SchoolManagerDrivingSchools FOREIGN KEY(SchoolID) REFERENCES DrivingSchools(SchoolID),
+    RegistrationDate DATETIME NOT NULL
 );
 CREATE UNIQUE INDEX schoolmanager_email_unique ON
     SchoolManager(Email);
@@ -90,7 +87,7 @@ CREATE TABLE Instructor(
     PhoneNumber NVARCHAR(10) NOT NULL,
     GenderID INT NOT NULL,
 	CONSTRAINT FK_InstructorGender FOREIGN KEY(GenderID) REFERENCES Gender(GenderID),
-    Birthday DATETIME NOT NULL,
+    Birthday DATE NOT NULL,
     AreaID INT NOT NULL,
 	CONSTRAINT FK_InstructorArea FOREIGN KEY(AreaID) REFERENCES Area(AreaID),
     GearboxID INT NOT NULL,
@@ -101,14 +98,15 @@ CREATE TABLE Instructor(
 	CONSTRAINT FK_EnrollmentRequestsLessonLength FOREIGN KEY(LessonLengthID) REFERENCES LessonLength(LessonLengthID),
     Price INT NOT NULL,
     TimeRange BIGINT NOT NULL,
-    DrivingSchool NVARCHAR(255) NOT NULL,
+    DrivingSchoolID INT NOT NULL,
+    CONSTRAINT FK_InstructorDrivingSchools FOREIGN KEY (DrivingSchoolID) REFERENCES DrivingSchools(SchoolID),
     SchoolManagerID INT,
 	CONSTRAINT FK_InstructorSchoolManager FOREIGN KEY(SchoolManagerID) REFERENCES SchoolManager(SManagerID),
     RateID INT NOT NULL,
 	CONSTRAINT FK_InstructorRate FOREIGN KEY(RateID) REFERENCES Rate(RateID),
-    RegistrationDate DATE NOT NULL
+    RegistrationDate DATETIME NOT NULL
 );
-CREATE UNIQUE INDEX instructor_email_unique ON
+    CREATE UNIQUE INDEX instructor_email_unique ON
     Instructor(Email);
 
 	CREATE TABLE Student(
@@ -119,7 +117,7 @@ CREATE UNIQUE INDEX instructor_email_unique ON
     PhoneNumber NVARCHAR(10) NOT NULL,
     GenderID INT NOT NULL,
 	CONSTRAINT FK_StudentGender FOREIGN KEY (GenderID) REFERENCES Gender(GenderID),
-    Birthday DATETIME NOT NULL,
+    Birthday DATE NOT NULL,
     CityID INT NOT NULL,
 	CONSTRAINT FK_StudentCity FOREIGN KEY (CityID) REFERENCES City(CityID),
     SAddress NVARCHAR(255) NOT NULL,
@@ -128,11 +126,13 @@ CREATE UNIQUE INDEX instructor_email_unique ON
     LicenseTypeID INT NOT NULL,
 	CONSTRAINT FK_StudentLicenseType FOREIGN KEY (LicenseTypeID) REFERENCES LicenseType(LicenseTypeID),
     TeacherGender INT NULL,
+    LessonLengthID INT NOT NULL,
+    CONSTRAINT FK_StudentLessonLength FOREIGN KEY (LessonLengthID) REFERENCES LessonLength(LessonLengthID),
     HighestPrice INT NOT NULL,
     InstructorID INT,
 	CONSTRAINT FK_StudentInstructor FOREIGN KEY (InstructorID) REFERENCES Instructor(InstructorID),
     LessonsCount INT NOT NULL,
-    RegistrationDate DATE NOT NULL
+    RegistrationDate DATETIME NOT NULL
 );
 CREATE UNIQUE INDEX student_email_unique ON
     Student(Email);
@@ -175,6 +175,16 @@ CREATE TABLE InstructorReviews(
 	TimeReview DATETIME NOT NULL
 );
 
+CREATE TABLE DrivingSchools(
+    SchoolID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+    SchoolName NVARCHAR(255) NOT NULL,
+    AreaID INT NOT NULL,
+	CONSTRAINT FK_SchoolManagerArea FOREIGN KEY(AreaID) REFERENCES Area(AreaID),
+    EstablishmentYear INT NOT NULL,
+    NumOfTeachers INT NOT NULL,
+);
+
+select * from DrivingSchools;
  
 INSERT INTO Gearbox(Type)
 VALUES (N'אוטומטי');
@@ -230,6 +240,9 @@ VALUES (N'אחלה');
 
 INSERT INTO Rate(RateMeaning)
 VALUES (N'מעולה');
+
+INSERT INTO Rate(RateMeaning)
+VALUES (N'אין דירוג');
 
 
 INSERT INTO Area(AreaName)
@@ -391,3 +404,6 @@ VALUES (N'נצרת',1);
 
 INSERT INTO City([CityName], [AreaID])
 VALUES (N'כפר שמריהו', 3);
+
+Insert INTO Student([SName],[Email], [Pass],[PhoneNumber], [GenderID], [Birthday], [CityID], [SAddress], [GearboxID], [LicenseTypeID], [TeacherGender], [HighestPrice], [LessonsCount], [RegistrationDate], [LessonLengthID])
+VALUES (N'שירי יפה', N'6363shiri@gmail.com', N'123456', N'0534261684',1, CAST(N'2004-09-22' AS Date), 20, N'תמוז 6', 1, 1, 1, 220, 0, CAST(N'2021-12-12 8:23:00.000' AS DateTime), 3);

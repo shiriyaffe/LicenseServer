@@ -10,11 +10,13 @@ namespace LicenseServerBL.Models
         public LessonLength()
         {
             Instructors = new HashSet<Instructor>();
+            Students = new HashSet<Student>();
         }
 
         public int LessonLengthId { get; set; }
         public int Slength { get; set; }
 
         public virtual ICollection<Instructor> Instructors { get; set; }
+        public virtual ICollection<Student> Students { get; set; }
     }
 }

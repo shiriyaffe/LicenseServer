@@ -50,5 +50,20 @@ namespace LicenseServerBL.Models
                 return false;
             }
         }
+
+        public bool AddInstructor(Instructor instructor)
+        {
+            try
+            {
+                this.Instructors.Add(instructor);
+                this.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
     }
 }

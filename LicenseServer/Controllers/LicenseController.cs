@@ -72,6 +72,30 @@ namespace LicenseServer.Controllers
             }
         }
 
+        [Route("SignUpInstructor")]
+        [HttpPost]
+        public Instructor SignUpInstructor([FromBody] Instructor instructor)
+        {
+            if (instructor != null)
+            {
+                bool signedUp = this.context.AddInstructor(instructor);
+                if (signedUp)
+                {
+                    HttpContext.Session.SetObject("theUser", instructor);
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                    //Important! Due to the Lazy Loading, the user will be returned with all of its contects!!
+                    return instructor;
+                }
+                else
+                    return null;
+            }
+            else
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                return null;
+            }
+        }
+
         [Route("GetLookups")]
         [HttpGet]
         public DTO.LookupTables GetLookups()
@@ -82,7 +106,9 @@ namespace LicenseServer.Controllers
                 Areas = context.Areas.ToList(),
                 GearBoxes = context.Gearboxes.ToList(),
                 Genders = context.Genders.ToList(),
-                LicenseTypes = context.LicenseTypes.ToList()
+                LicenseTypes = context.LicenseTypes.ToList(),
+                LessonLengths = context.LessonLengths.ToList(),
+                DrivingSchools = context.DrivingSchools.ToList()
             };
             return tables;
         }
