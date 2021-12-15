@@ -63,6 +63,15 @@ CREATE TABLE AppAdmin(
     APass NVARCHAR(255) NOT NULL
 );
 
+CREATE TABLE DrivingSchools(
+    SchoolID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+    SchoolName NVARCHAR(255) NOT NULL,
+    AreaID INT NOT NULL,
+	CONSTRAINT FK_SchoolManagerArea FOREIGN KEY(AreaID) REFERENCES Area(AreaID),
+    EstablishmentYear INT NOT NULL,
+    NumOfTeachers INT NOT NULL,
+);
+
 CREATE TABLE SchoolManager(
     SManagerID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
     SMName NVARCHAR(255) NOT NULL,
@@ -78,6 +87,8 @@ CREATE TABLE SchoolManager(
 );
 CREATE UNIQUE INDEX schoolmanager_email_unique ON
     SchoolManager(Email);
+
+    
 
 CREATE TABLE Instructor(
     InstructorID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
@@ -175,17 +186,61 @@ CREATE TABLE InstructorReviews(
 	TimeReview DATETIME NOT NULL
 );
 
-CREATE TABLE DrivingSchools(
-    SchoolID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
-    SchoolName NVARCHAR(255) NOT NULL,
-    AreaID INT NOT NULL,
-	CONSTRAINT FK_SchoolManagerArea FOREIGN KEY(AreaID) REFERENCES Area(AreaID),
-    EstablishmentYear INT NOT NULL,
-    NumOfTeachers INT NOT NULL,
+CREATE TABLE WorkingHours(
+    HourID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+    WHour NVARCHAR(255) NOT NULL
 );
 
-select * from DrivingSchools;
- 
+INSERT INTO WorkingHours(WHour)
+VALUES(N'00:00');
+INSERT INTO WorkingHours(WHour)
+VALUES(N'01:00');
+INSERT INTO WorkingHours(WHour)
+VALUES(N'02:00');
+INSERT INTO WorkingHours(WHour)
+VALUES(N'03:00');
+INSERT INTO WorkingHours(WHour)
+VALUES(N'04:00');
+INSERT INTO WorkingHours(WHour)
+VALUES(N'05:00');
+INSERT INTO WorkingHours(WHour)
+VALUES(N'06:00');
+INSERT INTO WorkingHours(WHour)
+VALUES(N'07:00');
+INSERT INTO WorkingHours(WHour)
+VALUES(N'08:00');
+INSERT INTO WorkingHours(WHour)
+VALUES(N'09:00');
+INSERT INTO WorkingHours(WHour)
+VALUES(N'10:00');
+INSERT INTO WorkingHours(WHour)
+VALUES(N'11:00');
+INSERT INTO WorkingHours(WHour)
+VALUES(N'12:00');
+INSERT INTO WorkingHours(WHour)
+VALUES(N'13:00');
+INSERT INTO WorkingHours(WHour)
+VALUES(N'14:00');
+INSERT INTO WorkingHours(WHour)
+VALUES(N'15:00');
+INSERT INTO WorkingHours(WHour)
+VALUES(N'16:00');
+INSERT INTO WorkingHours(WHour)
+VALUES(N'17:00');
+INSERT INTO WorkingHours(WHour)
+VALUES(N'18:00');
+INSERT INTO WorkingHours(WHour)
+VALUES(N'19:00');
+INSERT INTO WorkingHours(WHour)
+VALUES(N'20:00');
+INSERT INTO WorkingHours(WHour)
+VALUES(N'21:00');
+INSERT INTO WorkingHours(WHour)
+VALUES(N'22:00');
+INSERT INTO WorkingHours(WHour)
+VALUES(N'23:00');
+
+
 INSERT INTO Gearbox(Type)
 VALUES (N'אוטומטי');
 

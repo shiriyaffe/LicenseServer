@@ -34,6 +34,7 @@ namespace LicenseServerBL.Models
         public virtual DbSet<Review> Reviews { get; set; }
         public virtual DbSet<SchoolManager> SchoolManagers { get; set; }
         public virtual DbSet<Student> Students { get; set; }
+        public virtual DbSet<WorkingHour> WorkingHours { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -51,7 +52,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<AppAdmin>(entity =>
             {
                 entity.HasKey(e => e.AdminId)
-                    .HasName("PK__AppAdmin__719FE4E805991D2C");
+                    .HasName("PK__AppAdmin__719FE4E8945CF76A");
 
                 entity.ToTable("AppAdmin");
 
@@ -100,7 +101,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<DrivingSchool>(entity =>
             {
                 entity.HasKey(e => e.SchoolId)
-                    .HasName("PK__DrivingS__3DA4677B00F7354B");
+                    .HasName("PK__DrivingS__3DA4677B6F146E57");
 
                 entity.Property(e => e.SchoolId).HasColumnName("SchoolID");
 
@@ -120,7 +121,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<EnrollmentRequest>(entity =>
             {
                 entity.HasKey(e => e.EnrollmentId)
-                    .HasName("PK__Enrollme__7F6877FB6CA0A575");
+                    .HasName("PK__Enrollme__7F6877FB19644B3C");
 
                 entity.Property(e => e.EnrollmentId).HasColumnName("EnrollmentID");
 
@@ -160,7 +161,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<Estatus>(entity =>
             {
                 entity.HasKey(e => e.StatusId)
-                    .HasName("PK__EStatus__C8EE204367F2B6DC");
+                    .HasName("PK__EStatus__C8EE2043FB903140");
 
                 entity.ToTable("EStatus");
 
@@ -410,7 +411,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<SchoolManager>(entity =>
             {
                 entity.HasKey(e => e.SmanagerId)
-                    .HasName("PK__SchoolMa__A19B2388A937763D");
+                    .HasName("PK__SchoolMa__A19B2388BA07542E");
 
                 entity.ToTable("SchoolManager");
 
@@ -537,6 +538,19 @@ namespace LicenseServerBL.Models
                     .HasForeignKey(d => d.LicenseTypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_StudentLicenseType");
+            });
+
+            modelBuilder.Entity<WorkingHour>(entity =>
+            {
+                entity.HasKey(e => e.HourId)
+                    .HasName("PK__WorkingH__18DFA33E6895FCBD");
+
+                entity.Property(e => e.HourId).HasColumnName("HourID");
+
+                entity.Property(e => e.Whour)
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .HasColumnName("WHour");
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -65,5 +65,20 @@ namespace LicenseServerBL.Models
                 return false;
             }
         }
+
+        public bool AddSManager(SchoolManager sManager)
+        {
+            try
+            {
+                this.SchoolManagers.Add(sManager);
+                this.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
     }
 }

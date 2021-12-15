@@ -96,6 +96,30 @@ namespace LicenseServer.Controllers
             }
         }
 
+        [Route("SignUpSchoolManager")]
+        [HttpPost]
+        public SchoolManager SignUpSManager([FromBody] SchoolManager sManager)
+        {
+            if (sManager != null)
+            {
+                bool signedUp = this.context.AddSManager(sManager);
+                if (signedUp)
+                {
+                    HttpContext.Session.SetObject("theUser", sManager);
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                    //Important! Due to the Lazy Loading, the user will be returned with all of its contects!!
+                    return sManager;
+                }
+                else
+                    return null;
+            }
+            else
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                return null;
+            }
+        }
+
         [Route("GetLookups")]
         [HttpGet]
         public DTO.LookupTables GetLookups()
@@ -108,7 +132,8 @@ namespace LicenseServer.Controllers
                 Genders = context.Genders.ToList(),
                 LicenseTypes = context.LicenseTypes.ToList(),
                 LessonLengths = context.LessonLengths.ToList(),
-                DrivingSchools = context.DrivingSchools.ToList()
+                DrivingSchools = context.DrivingSchools.ToList(),
+                WorkingHours = context.WorkingHours.ToList()
             };
             return tables;
         }
