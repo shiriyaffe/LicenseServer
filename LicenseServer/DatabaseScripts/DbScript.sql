@@ -89,7 +89,6 @@ CREATE UNIQUE INDEX schoolmanager_email_unique ON
     SchoolManager(Email);
 
     
-
 CREATE TABLE Instructor(
     InstructorID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
     IName NVARCHAR(255) NOT NULL,

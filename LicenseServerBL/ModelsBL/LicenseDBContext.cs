@@ -80,5 +80,20 @@ namespace LicenseServerBL.Models
                 return false;
             }
         }
+
+        public bool AddDSchool(DrivingSchool dSchool)
+        {
+            try
+            {
+                this.DrivingSchools.Add(dSchool);
+                this.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
     }
 }

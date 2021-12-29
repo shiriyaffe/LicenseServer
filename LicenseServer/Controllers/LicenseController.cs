@@ -120,6 +120,44 @@ namespace LicenseServer.Controllers
             }
         }
 
+        [Route("AddDrivingSchool")]
+        [HttpPost]
+        public DrivingSchool AddNewDrivingSchool([FromBody] DrivingSchool dSchool)
+        {
+            if (dSchool != null)
+            {
+                bool added = this.context.AddDSchool(dSchool);
+                if (added)
+                {
+                    HttpContext.Session.SetObject("theUser", dSchool);
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                    //Important! Due to the Lazy Loading, the user will be returned with all of its contects!!
+                    return dSchool;
+                }
+                else
+                    return null;
+            }
+            else
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                return null;
+            }
+        }
+
+        
+        [Route("GetInstructors")]
+        [HttpGet]
+        public List<Instructor> GetInstructors()
+        {
+            List<Instructor> instractors = new List<Instructor>();
+            foreach(Instructor i in context.Instructors)
+            {
+                instractors.Add(i);
+            }
+            
+            return instractors;
+        }
+
         [Route("GetLookups")]
         [HttpGet]
         public DTO.LookupTables GetLookups()
