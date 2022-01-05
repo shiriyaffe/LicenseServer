@@ -164,13 +164,14 @@ namespace LicenseServer.Controllers
         {
             DTO.LookupTables tables = new DTO.LookupTables()
             {
-                Cities = context.Cities.ToList(),
+                DrivingSchools = context.DrivingSchools.ToList(),
                 Areas = context.Areas.ToList(),
+                Cities = context.Cities.ToList(),
                 GearBoxes = context.Gearboxes.ToList(),
                 Genders = context.Genders.ToList(),
                 LicenseTypes = context.LicenseTypes.ToList(),
                 LessonLengths = context.LessonLengths.ToList(),
-                DrivingSchools = context.DrivingSchools.ToList(),
+                
                 WorkingHours = context.WorkingHours.ToList()
             };
             return tables;

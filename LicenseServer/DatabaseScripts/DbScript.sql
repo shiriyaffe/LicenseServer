@@ -107,15 +107,19 @@ CREATE TABLE Instructor(
     LessonLengthID INT NOT NULL,
 	CONSTRAINT FK_EnrollmentRequestsLessonLength FOREIGN KEY(LessonLengthID) REFERENCES LessonLength(LessonLengthID),
     Price INT NOT NULL,
-    TimeRange BIGINT NOT NULL,
+    TimeRange NVARCHAR(255) NOT NULL,
+    Details NVARCHAR(255),
+    ReviewID int,
+    CONSTRAINT FK_InstructorReview FOREIGN KEY(ReviewID) REFERENCES Review(ReviewID),
     DrivingSchoolID INT NOT NULL,
     CONSTRAINT FK_InstructorDrivingSchools FOREIGN KEY (DrivingSchoolID) REFERENCES DrivingSchools(SchoolID),
     SchoolManagerID INT,
 	CONSTRAINT FK_InstructorSchoolManager FOREIGN KEY(SchoolManagerID) REFERENCES SchoolManager(SManagerID),
     RateID INT NOT NULL,
 	CONSTRAINT FK_InstructorRate FOREIGN KEY(RateID) REFERENCES Rate(RateID),
-    RegistrationDate DATETIME NOT NULL
+    RegistrationDate DATETIME NOT NULL,
 );
+
     CREATE UNIQUE INDEX instructor_email_unique ON
     Instructor(Email);
 
@@ -461,3 +465,5 @@ VALUES (N'כפר שמריהו', 3);
 
 Insert INTO Student([SName],[Email], [Pass],[PhoneNumber], [GenderID], [Birthday], [CityID], [SAddress], [GearboxID], [LicenseTypeID], [TeacherGender], [HighestPrice], [LessonsCount], [RegistrationDate], [LessonLengthID])
 VALUES (N'שירי יפה', N'6363shiri@gmail.com', N'123456', N'0534261684',1, CAST(N'2004-09-22' AS Date), 20, N'תמוז 6', 1, 1, 1, 220, 0, CAST(N'2021-12-12 8:23:00.000' AS DateTime), 3);
+
+select * from DrivingSchools;
