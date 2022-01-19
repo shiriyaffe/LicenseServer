@@ -466,4 +466,11 @@ VALUES (N'כפר שמריהו', 3);
 Insert INTO Student([SName],[Email], [Pass],[PhoneNumber], [GenderID], [Birthday], [CityID], [SAddress], [GearboxID], [LicenseTypeID], [TeacherGender], [HighestPrice], [LessonsCount], [RegistrationDate], [LessonLengthID])
 VALUES (N'שירי יפה', N'6363shiri@gmail.com', N'123456', N'0534261684',1, CAST(N'2004-09-22' AS Date), 20, N'תמוז 6', 1, 1, 1, 220, 0, CAST(N'2021-12-12 8:23:00.000' AS DateTime), 3);
 
-select * from DrivingSchools;
+INSERT INTO DrivingSchools([SchoolName],[AreaID],[EstablishmentYear],[NumOfTeachers])
+VALUES (N'GalDa',3,2017,18);
+
+INSERT INTO SchoolManager([SMName],[SchoolID],[RegistrationDate],[PhoneNumber],[Pass],[GenderID],[Email],[Birthday])
+VALUES (N'גל דודזון',1,CAST(N'2021-1-10 12:23:00.000' AS DateTime),0545403304,13579,1,N'GalDa@gmail.com',CAST(N'1950-08-13' AS Date));
+
+Insert INTO Instructor([IName],[Email],[Pass],[PhoneNumber],[GenderID],[Birthday],[AreaID],[Details],[DrivingSchoolID],[GearboxID],[LessonLengthID],[LicenseTypeID],[Price],[RateID],[RegistrationDate],[TimeRange])
+VALUES (N'נוי גנור', N'noiganor@gmail.com', N'24680', N'0505689857',1, CAST(N'1954-08-24' AS Date), 3, N'התחלתי ללמד נהיגה לפני 15 שנה, כאשר 5 מתוכם בבית הספר לנהיגה הנוכחי. פנויה לתלמידים חדשים', 1, 1,3,1,200, 4, CAST(N'2021-1-17 8:23:00.000' AS DateTime), N'7:30-21:00');

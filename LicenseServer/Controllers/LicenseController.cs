@@ -176,6 +176,13 @@ namespace LicenseServer.Controllers
             };
             return tables;
         }
+
+        [Route("IsStudent")]
+        [HttpGet]
+        public bool IsStudent([FromBody] Object s)
+        {
+            return context.IsStudentDB(s);
+        }
     }
 }
 

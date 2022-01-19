@@ -13,27 +13,48 @@ namespace LicenseServerBL.Models
     {
         public Object Login(string email, string pass)
         {
-            Object user = this.Students.
+            Student student = new Student();
+            Instructor instructor = new Instructor();
+            SchoolManager schoolManager = new SchoolManager();
+
+            student = this.Students.
                           Include(er => er.EnrollmentRequests).
                           Include(l => l.Lessons).
                           Where(u => u.Email == email && u.Pass == pass).FirstOrDefault();
 
-            if (user == null)
+            if (student == null)
             {
-                user = this.Instructors.
+                instructor = this.Instructors.
                           Include(i => i.EnrollmentRequests).
                           Include(i => i.Lessons).
                           Include(i => i.Students).
                           Where(u => u.Email == email && u.Pass == pass).FirstOrDefault();
             }
-            else if (user == null)
+            else
+                return student;
+
+            if (instructor == null)
             {
-                user = this.SchoolManagers.
+                schoolManager = this.SchoolManagers.
                           Include(sm => sm.Instructors).
                           Where(u => u.Email == email && u.Pass == pass).FirstOrDefault();
             }
+            else
+                return instructor;
+            
+            
+            return schoolManager;
+        }
 
-            return user;
+        public bool IsStudentDB(Object student)
+        {
+            foreach(Student s in Students)
+            {
+                if (s.Email == ((Student)student).Email && s.Pass == ((Student)student).Pass)
+                    return true;
+            }
+                
+            return false;
         }
 
         public bool AddStudent(Student student)
