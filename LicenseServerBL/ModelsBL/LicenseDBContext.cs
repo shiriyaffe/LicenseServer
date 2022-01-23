@@ -17,21 +17,25 @@ namespace LicenseServerBL.Models
             Instructor instructor = new Instructor();
             SchoolManager schoolManager = new SchoolManager();
 
-            student = this.Students.
+            Student s = this.Students.
                           Include(er => er.EnrollmentRequests).
                           Include(l => l.Lessons).
                           Where(u => u.Email == email && u.Pass == pass).FirstOrDefault();
 
-            if (student == null)
+            if (s == null)
             {
-                instructor = this.Instructors.
+                Instructor i = this.Instructors.
                           Include(i => i.EnrollmentRequests).
                           Include(i => i.Lessons).
                           Include(i => i.Students).
                           Where(u => u.Email == email && u.Pass == pass).FirstOrDefault();
+                instructor = i;
             }
             else
+            {
+                student = s;
                 return student;
+            }
 
             if (instructor == null)
             {
@@ -40,8 +44,9 @@ namespace LicenseServerBL.Models
                           Where(u => u.Email == email && u.Pass == pass).FirstOrDefault();
             }
             else
+            {
                 return instructor;
-            
+            }
             
             return schoolManager;
         }

@@ -472,5 +472,10 @@ VALUES (N'GalDa',3,2017,18);
 INSERT INTO SchoolManager([SMName],[SchoolID],[RegistrationDate],[PhoneNumber],[Pass],[GenderID],[Email],[Birthday])
 VALUES (N'גל דודזון',1,CAST(N'2021-1-10 12:23:00.000' AS DateTime),0545403304,13579,1,N'GalDa@gmail.com',CAST(N'1950-08-13' AS Date));
 
-Insert INTO Instructor([IName],[Email],[Pass],[PhoneNumber],[GenderID],[Birthday],[AreaID],[Details],[DrivingSchoolID],[GearboxID],[LessonLengthID],[LicenseTypeID],[Price],[RateID],[RegistrationDate],[TimeRange])
-VALUES (N'נוי גנור', N'noiganor@gmail.com', N'24680', N'0505689857',1, CAST(N'1954-08-24' AS Date), 3, N'התחלתי ללמד נהיגה לפני 15 שנה, כאשר 5 מתוכם בבית הספר לנהיגה הנוכחי. פנויה לתלמידים חדשים', 1, 1,3,1,200, 4, CAST(N'2021-1-17 8:23:00.000' AS DateTime), N'7:30-21:00');
+Insert INTO Instructor([IName],[Email],[Pass],[PhoneNumber],[GenderID],[Birthday],[AreaID],[Details],[DrivingSchoolID],[GearboxID],[LessonLengthID],[LicenseTypeID],[Price],[RateID],[RegistrationDate],[TimeRange],[SchoolManagerID])
+VALUES (N'נוי גנור', N'noiganor@gmail.com', N'24680', N'0505689857',1, CAST(N'1954-08-24' AS Date), 3, N'התחלתי ללמד נהיגה לפני 15 שנה, כאשר 5 מתוכם בבית הספר לנהיגה הנוכחי. פנויה לתלמידים חדשים', 1, 1,3,1,200, 4, CAST(N'2021-1-17 8:23:00.000' AS DateTime), N'7:30-21:00',1);
+
+Insert INTO Instructor([IName],[Email],[Pass],[PhoneNumber],[GenderID],[Birthday],[AreaID],[Details],[DrivingSchoolID],[GearboxID],[LessonLengthID],[LicenseTypeID],[Price],[RateID],[RegistrationDate],[TimeRange],[SchoolManagerID])
+VALUES (N'יולי לוי', N'yulilev@gmail.com', N'67890', N'0542130122',1, CAST(N'1960-07-02' AS Date), 3, N'התחלתי ללמד נהיגה בתור תחביב, כעבודה מהצד, ולאחר 20 שנה, התאהבתי במקצוע והחלתי לעבוד בו במשרה מלאה. פנויה לתלמידים לדשים', 1, 1,3,1,210, 4, CAST(N'2021-1-23 10:04:00.000' AS DateTime), N'7:00-20:00',1);
+
+select * from Instructor;
