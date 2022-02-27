@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LicenseServerBL.Models;
+using System.ComponentModel;
+using System.Windows.Input;
+using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
 
 namespace LicenseServer.Controllers
 {
@@ -72,6 +76,86 @@ namespace LicenseServer.Controllers
             }
         }
 
+        [Route("UpdateStudent")]
+        [HttpPost]
+        public Student UpdateStudent([FromBody] Student student)
+        {
+            //If user is null the request is bad
+            if (student == null)
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
+                return null;
+            }
+
+            Student currentUser = HttpContext.Session.GetObject<Student>("theUser");
+            //Check if user logged in and its ID is the same as the contact user ID
+            if (currentUser != null && currentUser.InstructorId == student.InstructorId)
+            {
+                Student updatedStudent = context.UpdateStudent(currentUser, student);
+
+                if (updatedStudent == null)
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                    return null;
+                }
+
+                Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                return updatedStudent;
+
+                ////Now check if an image exist for the contact (photo). If not, set the default image!
+                //var sourcePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", DEFAULT_PHOTO);
+                //var targetPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", $"{user.Id}.jpg");
+                //System.IO.File.Copy(sourcePath, targetPath);
+
+                //return the contact with its new ID if that was a new contact
+            }
+            else
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                return null;
+            }
+        }
+
+        [Route("UpdateSManager")]
+        [HttpPost]
+        public SchoolManager UpdateSManager([FromBody] SchoolManager schoolManager)
+        {
+            //If user is null the request is bad
+            if (schoolManager == null)
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
+                return null;
+            }
+
+            SchoolManager currentUser = HttpContext.Session.GetObject<SchoolManager>("theUser");
+            //Check if user logged in and its ID is the same as the contact user ID
+            if (currentUser != null && currentUser.SmanagerId == schoolManager.SmanagerId)
+            {
+                SchoolManager updatedSchoolManager = context.UpdateSchoolManager(currentUser, schoolManager);
+
+                if (updatedSchoolManager == null)
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                    return null;
+                }
+
+                Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                return updatedSchoolManager;
+
+                ////Now check if an image exist for the contact (photo). If not, set the default image!
+                //var sourcePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", DEFAULT_PHOTO);
+                //var targetPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", $"{user.Id}.jpg");
+                //System.IO.File.Copy(sourcePath, targetPath);
+
+                //return the contact with its new ID if that was a new contact
+            }
+            else
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                return null;
+            }
+        }
+
         [Route("SignUpInstructor")]
         [HttpPost]
         public Instructor SignUpInstructor([FromBody] Instructor instructor)
@@ -94,6 +178,106 @@ namespace LicenseServer.Controllers
                 Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
                 return null;
             }
+        }
+
+        [Route("UpdateInstructor")]
+        [HttpPost]
+        public Instructor UpdateInstructor([FromBody] Instructor instructor)
+        {
+            //If user is null the request is bad
+            if (instructor == null)
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
+                return null;
+            }
+
+            Instructor currentUser = HttpContext.Session.GetObject<Instructor>("theUser");
+            //Check if user logged in and its ID is the same as the contact user ID
+            if (currentUser != null && currentUser.InstructorId == instructor.InstructorId)
+            {
+                Instructor updatedInstructor = context.UpdateInstructor(currentUser, instructor);
+
+                if (updatedInstructor == null)
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                    return null;
+                }
+
+                Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                return updatedInstructor;
+
+                ////Now check if an image exist for the contact (photo). If not, set the default image!
+                //var sourcePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", DEFAULT_PHOTO);
+                //var targetPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", $"{user.Id}.jpg");
+                //System.IO.File.Copy(sourcePath, targetPath);
+
+                //return the contact with its new ID if that was a new contact
+            }
+            else
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                return null;
+            }
+        }
+
+        [Route("GetAreaName")]
+        [HttpGet]
+        public string GetAreaName([FromQuery] int areaId)
+        {
+            foreach(Area a in context.Areas)
+            {
+                if (a.AreaId == areaId)
+                    return a.AreaName;
+            }
+            return "";
+        }
+
+        [Route("GetCityById")]
+        [HttpGet]
+        public City GetCityById([FromQuery] int cityId)
+        {
+            foreach (City c in context.Cities)
+            {
+                if (c.CityId == cityId)
+                    return c;
+            }
+            return null;
+        }
+
+        [Route("GetAreaById")]
+        [HttpGet]
+        public Area GetAreaById([FromQuery] int areaId)
+        {
+            foreach (Area a in context.Areas)
+            {
+                if (a.AreaId == areaId)
+                    return a;
+            }
+            return null;
+        }
+
+        [Route("GetGearboxById")]
+        [HttpGet]
+        public Gearbox GetGearboxById([FromQuery] int gearboxId)
+        {
+            foreach (Gearbox g in context.Gearboxes)
+            {
+                if (g.GearboxId == gearboxId)
+                    return g;
+            }
+            return null;
+        }
+
+        [Route("GetLessonLengthById")]
+        [HttpGet]
+        public LessonLength GetLessonLengthById([FromQuery] int lessonLenghId)
+            {
+            foreach (LessonLength l in context.LessonLengths)
+            {
+                if (l.LessonLengthId == lessonLenghId)
+                    return l;
+            }
+            return null;
         }
 
         [Route("SignUpSchoolManager")]
@@ -143,13 +327,38 @@ namespace LicenseServer.Controllers
                 return null;
             }
         }
-
         
+
+        [Route("AddEnrollmentRequest")]
+        [HttpPost]
+        public EnrollmentRequest AddEnrollmentRequest([FromBody] EnrollmentRequest enrollment)
+        {
+            if (enrollment != null)
+            {
+                bool added = this.context.AddEnrollment(enrollment);
+                if (added)
+                {
+                    HttpContext.Session.SetObject("theUser", enrollment);
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                    //Important! Due to the Lazy Loading, the user will be returned with all of its contects!!
+                    return enrollment;
+                }
+                else
+                    return null;
+            }
+            else
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                return null;
+            }
+        }
+
+
         [Route("GetInstructors")]
         [HttpGet]
-        public List<Instructor> GetInstructors()
+        public ObservableCollection<Instructor> GetInstructors()
         {
-            List<Instructor> instractors = new List<Instructor>();
+            ObservableCollection<Instructor> instractors = new ObservableCollection<Instructor>();
             foreach(Instructor i in context.Instructors)
             {
                 instractors.Add(i);

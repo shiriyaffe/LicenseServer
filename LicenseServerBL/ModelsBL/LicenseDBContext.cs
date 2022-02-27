@@ -121,5 +121,93 @@ namespace LicenseServerBL.Models
                 return false;
             }
         }
+
+        public bool AddEnrollment(EnrollmentRequest enrollment)
+        {
+            try
+            {
+                this.EnrollmentRequests.Add(enrollment);
+                this.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public Student UpdateStudent(Student student, Student updatedStudent)
+        {
+            try
+            {
+                Student currentUser = this.Students
+                .Where(u => u.StudentId == student.StudentId).FirstOrDefault();
+
+                currentUser.Pass = updatedStudent.Pass;
+                currentUser.PhoneNumber = updatedStudent.PhoneNumber;
+                currentUser.CityId = updatedStudent.CityId;
+                currentUser.GearboxId = updatedStudent.GearboxId;
+                currentUser.LessonLengthId = updatedStudent.LessonLengthId;
+                currentUser.Saddress = updatedStudent.Saddress;
+
+
+                this.SaveChanges();
+                return currentUser;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
+        }
+
+        public SchoolManager UpdateSchoolManager(SchoolManager schoolManager, SchoolManager updatedSchoolManager)
+        {
+            try
+            {
+                SchoolManager currentUser = this.SchoolManagers
+                .Where(u => u.SmanagerId == schoolManager.SmanagerId).FirstOrDefault();
+
+                currentUser.Pass = updatedSchoolManager.Pass;
+                currentUser.PhoneNumber = updatedSchoolManager.PhoneNumber;
+
+
+                this.SaveChanges();
+                return currentUser;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
+        }
+
+        public Instructor UpdateInstructor(Instructor instructor, Instructor updatedInstructor)
+        {
+            try
+            {
+                Instructor currentUser = this.Instructors
+                .Where(u => u.InstructorId == instructor.InstructorId).FirstOrDefault();
+
+                currentUser.Pass = updatedInstructor.Pass;
+                currentUser.Birthday = updatedInstructor.Birthday;
+                currentUser.PhoneNumber = updatedInstructor.PhoneNumber;
+                currentUser.AreaId = updatedInstructor.AreaId;
+                currentUser.GearboxId = updatedInstructor.GearboxId;
+                currentUser.LessonLengthId = updatedInstructor.LessonLengthId;
+                currentUser.Price = updatedInstructor.Price;
+                currentUser.Details = updatedInstructor.Details;
+
+
+                this.SaveChanges();
+                return currentUser;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
+        }
     }
 }
