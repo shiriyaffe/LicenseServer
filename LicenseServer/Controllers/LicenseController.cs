@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace LicenseServer.Controllers
 {
@@ -62,6 +63,11 @@ namespace LicenseServer.Controllers
                 if (signedUp)
                 {
                     HttpContext.Session.SetObject("theUser", student);
+
+                    var pathFrom = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images", "defaultPhoto.png");
+                    var pathTo = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images", $"{student.StudentId}.jpg");
+                    System.IO.File.Copy(pathFrom, pathTo);
+
                     Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
                     //Important! Due to the Lazy Loading, the user will be returned with all of its contects!!
                     return student;
@@ -365,6 +371,20 @@ namespace LicenseServer.Controllers
             }
             
             return instractors;
+        }
+
+        [Route("GetStudentsByInstructor")]
+        [HttpGet]
+        public ObservableCollection<Student> GetStudentsByInstructor([FromQuery] int instructorId)
+        {
+            ObservableCollection<Student> students = new ObservableCollection<Student>();
+            foreach (Student s in context.Students)
+            {
+                if (s.InstructorId == instructorId)
+                    students.Add(s);
+            }
+
+            return students;
         }
 
         [Route("GetLookups")]

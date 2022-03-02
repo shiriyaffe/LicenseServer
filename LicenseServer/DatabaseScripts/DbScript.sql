@@ -107,7 +107,6 @@ CREATE TABLE Instructor(
     LessonLengthID INT NOT NULL,
 	CONSTRAINT FK_EnrollmentRequestsLessonLength FOREIGN KEY(LessonLengthID) REFERENCES LessonLength(LessonLengthID),
     Price INT NOT NULL,
-    TimeRange NVARCHAR(255) NOT NULL,
     Details NVARCHAR(255),
     ReviewID int,
     CONSTRAINT FK_InstructorReview FOREIGN KEY(ReviewID) REFERENCES Review(ReviewID),
@@ -479,4 +478,3 @@ VALUES (N'נוי גנור', N'noiganor@gmail.com', N'24680', N'0505689857',1, CA
 
 Insert INTO Instructor([IName],[Email],[Pass],[PhoneNumber],[GenderID],[Birthday],[AreaID],[Details],[DrivingSchoolID],[GearboxID],[LessonLengthID],[LicenseTypeID],[Price],[RateID],[RegistrationDate],[SchoolManagerID],[StartTime],[EndTime])
 VALUES (N'יולי לוי', N'yulilev@gmail.com', N'67890', N'0542130122',1, CAST(N'1960-07-02' AS Date), 3, N'התחלתי ללמד נהיגה בתור תחביב, כעבודה מהצד, ולאחר 20 שנה, התאהבתי במקצוע והחלתי לעבוד בו במשרה מלאה. פנויה לתלמידים לדשים', 1, 1,3,1,210, 4, CAST(N'2021-1-23 10:04:00.000' AS DateTime),1,N'7:00',N'21:00');
-

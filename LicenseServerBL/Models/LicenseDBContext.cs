@@ -52,7 +52,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<AppAdmin>(entity =>
             {
                 entity.HasKey(e => e.AdminId)
-                    .HasName("PK__AppAdmin__719FE4E80BCC2FB4");
+                    .HasName("PK__AppAdmin__719FE4E82C616B00");
 
                 entity.ToTable("AppAdmin");
 
@@ -101,7 +101,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<DrivingSchool>(entity =>
             {
                 entity.HasKey(e => e.SchoolId)
-                    .HasName("PK__DrivingS__3DA4677BBA800C6B");
+                    .HasName("PK__DrivingS__3DA4677B186BF795");
 
                 entity.Property(e => e.SchoolId).HasColumnName("SchoolID");
 
@@ -121,7 +121,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<EnrollmentRequest>(entity =>
             {
                 entity.HasKey(e => e.EnrollmentId)
-                    .HasName("PK__Enrollme__7F6877FBB2CCB16B");
+                    .HasName("PK__Enrollme__7F6877FB3392C8E0");
 
                 entity.Property(e => e.EnrollmentId).HasColumnName("EnrollmentID");
 
@@ -161,7 +161,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<Estatus>(entity =>
             {
                 entity.HasKey(e => e.StatusId)
-                    .HasName("PK__EStatus__C8EE204398B8F0EB");
+                    .HasName("PK__EStatus__C8EE20436491226B");
 
                 entity.ToTable("EStatus");
 
@@ -428,7 +428,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<SchoolManager>(entity =>
             {
                 entity.HasKey(e => e.SmanagerId)
-                    .HasName("PK__SchoolMa__A19B2388B2B04563");
+                    .HasName("PK__SchoolMa__A19B238855191DAB");
 
                 entity.ToTable("SchoolManager");
 
@@ -560,7 +560,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<WorkingHour>(entity =>
             {
                 entity.HasKey(e => e.HourId)
-                    .HasName("PK__WorkingH__18DFA33E7D245D2C");
+                    .HasName("PK__WorkingH__18DFA33E8233D3C2");
 
                 entity.Property(e => e.HourId).HasColumnName("HourID");
 
