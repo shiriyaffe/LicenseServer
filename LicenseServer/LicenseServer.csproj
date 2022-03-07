@@ -12,4 +12,8 @@
     <ProjectReference Include="..\LicenseServerBL\LicenseServerBL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\Students\" />
+  </ItemGroup>
+
 </Project>
