@@ -262,6 +262,18 @@ namespace LicenseServer.Controllers
             return null;
         }
 
+        [Route("GetHour")]
+        [HttpGet]
+        public WorkingHour GetHour([FromQuery] string wHour)
+        {
+            foreach (WorkingHour wh in context.WorkingHours)
+            {
+                if (wh.Whour.Equals(wHour))
+                    return wh;
+            }
+            return null;
+        }
+
         [Route("GetGearboxById")]
         [HttpGet]
         public Gearbox GetGearboxById([FromQuery] int gearboxId)
@@ -371,6 +383,20 @@ namespace LicenseServer.Controllers
             }
             
             return instractors;
+        }
+
+        [Route("GetLessons")]
+        [HttpGet]
+        public ObservableCollection<Lesson> GetLessons([FromQuery] int studentId)
+        {
+            ObservableCollection<Lesson> lessons = new ObservableCollection<Lesson>();
+            foreach (Lesson l in context.Lessons)
+            {
+                if (l.StuudentId == studentId && l.HasDone)
+                    lessons.Add(l);
+            }
+
+            return lessons;
         }
 
         [Route("GetStudentsByInstructor")]
