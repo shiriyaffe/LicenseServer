@@ -473,6 +473,57 @@ namespace LicenseServer.Controllers
             return Forbid();
         }
 
+        [Route("DeleteStudent")]
+        [HttpGet]
+        public Student DeleteStudent([FromQuery] int studentId)
+        {
+            Student student = context.Students.Where(s => s.StudentId == studentId).FirstOrDefault();
+
+            //If user is null the request is bad
+            if (student == null)
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
+                return null;
+            }
+            else
+            {
+                Student deletedStudent = context.DeleteStudentFromInstructor(student);
+                if (deletedStudent == null)
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                    return null;
+                }
+
+                Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                return deletedStudent;
+            }
+        }
+
+        [Route("DeleteInstructor")]
+        [HttpGet]
+        public Instructor DeleteInstructor([FromQuery] int instructortId)
+        {
+            Instructor instructor = context.Instructors.Where(i => i.InstructorId == instructortId).FirstOrDefault();
+
+            //If user is null the request is bad
+            if (instructor == null)
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
+                return null;
+            }
+            else
+            {
+                Instructor deletedInstructor = context.DeleteInstructorFromSManager(instructor);
+                if (deletedInstructor == null)
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                    return null;
+                }
+
+                Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                return deletedInstructor;
+            }
+        }
     }
 }
 

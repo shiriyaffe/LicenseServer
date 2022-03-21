@@ -471,16 +471,24 @@ INSERT INTO SchoolManager([SMName],[SchoolID],[RegistrationDate],[PhoneNumber],[
 VALUES (N'גל דודזון',1,CAST(N'2021-1-10 12:23:00.000' AS DateTime),0545403304,13579,1,N'GalDa@gmail.com',CAST(N'1950-08-13' AS Date));
 
 Insert INTO Instructor([IName],[Email],[Pass],[PhoneNumber],[GenderID],[Birthday],[AreaID],[Details],[DrivingSchoolID],[GearboxID],[LessonLengthID],[LicenseTypeID],[Price],[RateID],[RegistrationDate],[SchoolManagerID],[StartTime],[EndTime])
-VALUES (N'נוי גנור', N'noiganor@gmail.com', N'24680', N'0505689857',1, CAST(N'1954-08-24' AS Date), 3, N'התחלתי ללמד נהיגה לפני 15 שנה, כאשר 5 מתוכם בבית הספר לנהיגה הנוכחי. פנויה לתלמידים חדשים', 1, 1,3,1,200, 4, CAST(N'2021-1-17 8:23:00.000' AS DateTime),1,N'7:30',N'20:00');
+VALUES (N'נוי גנור', N'noiganor@gmail.com', N'24680', N'0505689857',1, CAST(N'1954-08-24' AS Date), 3, N'התחלתי ללמד נהיגה לפני 15 שנה, כאשר 5 מתוכם בבית הספר לנהיגה הנוכחי. פנויה לתלמידים חדשים', 1, 1,3,1,200, 4, CAST(N'2021-1-17 8:23:00.000' AS DateTime),1,N'07:00',N'20:00');
 
 Insert INTO Instructor([IName],[Email],[Pass],[PhoneNumber],[GenderID],[Birthday],[AreaID],[Details],[DrivingSchoolID],[GearboxID],[LessonLengthID],[LicenseTypeID],[Price],[RateID],[RegistrationDate],[SchoolManagerID],[StartTime],[EndTime])
-VALUES (N'יולי לוי', N'yulilev@gmail.com', N'67890', N'0542130122',1, CAST(N'1960-07-02' AS Date), 3, N'התחלתי ללמד נהיגה בתור תחביב, כעבודה מהצד, ולאחר 20 שנה, התאהבתי במקצוע והחלתי לעבוד בו במשרה מלאה. פנויה לתלמידים לדשים', 1, 1,3,1,210, 4, CAST(N'2021-1-23 10:04:00.000' AS DateTime),1,N'7:00',N'21:00');
+VALUES (N'יולי לוי', N'yulilev@gmail.com', N'67890', N'0542130122',1, CAST(N'1960-07-02' AS Date), 3, N'התחלתי ללמד נהיגה בתור תחביב, כעבודה מהצד, ולאחר 20 שנה, התאהבתי במקצוע והחלתי לעבוד בו במשרה מלאה. פנויה לתלמידים לדשים', 1, 1,3,1,210, 4, CAST(N'2021-1-23 10:04:00.000' AS DateTime),1,N'08:00',N'21:00');
 
 Insert INTO Student([SName],[Email], [Pass],[PhoneNumber], [GenderID], [Birthday], [CityID], [SAddress], [GearboxID], [LicenseTypeID], [TeacherGender], [HighestPrice], [LessonsCount], [RegistrationDate], [LessonLengthID], [InstructorID])
 VALUES (N'שירי יפה', N'6363shiri@gmail.com', N'123456', N'0534261684',1, CAST(N'2004-09-22' AS Date), 20, N'תמוז 6', 1, 1, 1, 220, 0, CAST(N'2021-12-12 8:23:00.000' AS DateTime), 3, 1);
 
-SELECT * FROM Instructor;
-
 UPDATE Instructor
 SET StartTime = '07:00'
+WHERE InstructorID = 1;
+
+UPDATE Instructor
+SET SchoolManagerID = 2, DrivingSchoolID = 2
 WHERE InstructorID = 2;
+
+UPDATE Student
+SET InstructorID = 1
+WHERE StudentID = 1;
+
+select * from Instructor;

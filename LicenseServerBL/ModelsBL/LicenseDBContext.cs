@@ -162,6 +162,39 @@ namespace LicenseServerBL.Models
             }
         }
 
+        public Student DeleteStudentFromInstructor(Student student)
+        {
+            try
+            {
+                student.InstructorId = null;
+
+                this.SaveChanges();
+                return student;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
+        }
+
+        public Instructor DeleteInstructorFromSManager(Instructor instructor)
+        {
+            try
+            {
+                instructor.SchoolManagerId = null;
+                instructor.DrivingSchoolId = 0;
+
+                this.SaveChanges();
+                return instructor;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
+        }
+
         public SchoolManager UpdateSchoolManager(SchoolManager schoolManager, SchoolManager updatedSchoolManager)
         {
             try
