@@ -480,15 +480,7 @@ Insert INTO Student([SName],[Email], [Pass],[PhoneNumber], [GenderID], [Birthday
 VALUES (N'שירי יפה', N'6363shiri@gmail.com', N'123456', N'0534261684',1, CAST(N'2004-09-22' AS Date), 20, N'תמוז 6', 1, 1, 1, 220, 0, CAST(N'2021-12-12 8:23:00.000' AS DateTime), 3, 1);
 
 UPDATE Instructor
-SET StartTime = '07:00'
+SET SchoolManagerID = 1, DrivingSchoolID = 1
 WHERE InstructorID = 1;
-
-UPDATE Instructor
-SET SchoolManagerID = 2, DrivingSchoolID = 2
-WHERE InstructorID = 2;
-
-UPDATE Student
-SET InstructorID = 1
-WHERE StudentID = 1;
 
 select * from Instructor;

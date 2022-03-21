@@ -524,6 +524,29 @@ namespace LicenseServer.Controllers
                 return deletedInstructor;
             }
         }
+
+        [Route("GetStudentsBySchool")]
+        [HttpGet]
+        public ObservableCollection<Student> GetStudentsBySchool(int sManagerId)
+        {
+            ObservableCollection<Student> students = new ObservableCollection<Student>();
+            foreach(Student s in context.Students)
+            {
+                if(s.InstructorId != null && s.InstructorId > 0)
+                {
+                    foreach(Instructor i in context.Instructors)
+                    {
+                        if (i.InstructorId == s.InstructorId)
+                        {
+                            if (i.SchoolManagerId != null && i.SchoolManagerId == sManagerId)
+                                students.Add(s);
+                        }
+                    }
+                }
+            }
+
+            return students;
+        }
     }
 }
 
