@@ -289,7 +289,7 @@ namespace LicenseServer.Controllers
         [Route("GetLessonLengthById")]
         [HttpGet]
         public LessonLength GetLessonLengthById([FromQuery] int lessonLenghId)
-            {
+        {
             foreach (LessonLength l in context.LessonLengths)
             {
                 if (l.LessonLengthId == lessonLenghId)
@@ -376,13 +376,13 @@ namespace LicenseServer.Controllers
         [HttpGet]
         public ObservableCollection<Instructor> GetInstructors()
         {
-            ObservableCollection<Instructor> instractors = new ObservableCollection<Instructor>();
+            ObservableCollection<Instructor> instructors = new ObservableCollection<Instructor>();
             foreach(Instructor i in context.Instructors)
             {
-                instractors.Add(i);
+                instructors.Add(i);
             }
             
-            return instractors;
+            return instructors;
         }
 
         [Route("GetLessons")]
@@ -529,8 +529,9 @@ namespace LicenseServer.Controllers
         [HttpGet]
         public ObservableCollection<Student> GetStudentsBySchool(int sManagerId)
         {
-            ObservableCollection<Student> students = new ObservableCollection<Student>();
-            foreach(Student s in context.Students)
+            ObservableCollection<Student> students = this.context.GetAllStudents();
+            List<Student> students1 = context.Students.ToList<Student>();
+            foreach (Student s in students1)
             {
                 if(s.InstructorId != null && s.InstructorId > 0)
                 {
@@ -538,8 +539,8 @@ namespace LicenseServer.Controllers
                     {
                         if (i.InstructorId == s.InstructorId)
                         {
-                            if (i.SchoolManagerId != null && i.SchoolManagerId == sManagerId)
-                                students.Add(s);
+                            if (i.SchoolManagerId != null && i.SchoolManagerId != sManagerId)
+                                students.Remove(s);
                         }
                     }
                 }

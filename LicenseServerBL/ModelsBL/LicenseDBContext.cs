@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -242,5 +243,16 @@ namespace LicenseServerBL.Models
                 return null;
             }
         }
+
+        public ObservableCollection<Student> GetAllStudents()
+        {
+            ObservableCollection<Student> students = new ObservableCollection<Student>();
+            for (int i = 1; i == this.Students.Count(); i++)
+            {
+                students.Add(this.Students.Include(s => s.Instructor).Where(s => s.StudentId == i).FirstOrDefault());
+            }
+            return students;
+        }
+        
     }
 }

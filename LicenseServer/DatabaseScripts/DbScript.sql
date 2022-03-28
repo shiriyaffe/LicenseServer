@@ -478,9 +478,3 @@ VALUES (N'יולי לוי', N'yulilev@gmail.com', N'67890', N'0542130122',1, CAS
 
 Insert INTO Student([SName],[Email], [Pass],[PhoneNumber], [GenderID], [Birthday], [CityID], [SAddress], [GearboxID], [LicenseTypeID], [TeacherGender], [HighestPrice], [LessonsCount], [RegistrationDate], [LessonLengthID], [InstructorID])
 VALUES (N'שירי יפה', N'6363shiri@gmail.com', N'123456', N'0534261684',1, CAST(N'2004-09-22' AS Date), 20, N'תמוז 6', 1, 1, 1, 220, 0, CAST(N'2021-12-12 8:23:00.000' AS DateTime), 3, 1);
-
-UPDATE Instructor
-SET SchoolManagerID = 1, DrivingSchoolID = 1
-WHERE InstructorID = 1;
-
-select * from Instructor;
