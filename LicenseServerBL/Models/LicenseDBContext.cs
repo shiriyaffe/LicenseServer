@@ -52,7 +52,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<AppAdmin>(entity =>
             {
                 entity.HasKey(e => e.AdminId)
-                    .HasName("PK__AppAdmin__719FE4E88CACA144");
+                    .HasName("PK__AppAdmin__719FE4E8FCA30465");
 
                 entity.ToTable("AppAdmin");
 
@@ -101,7 +101,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<DrivingSchool>(entity =>
             {
                 entity.HasKey(e => e.SchoolId)
-                    .HasName("PK__DrivingS__3DA4677BDABCE8FD");
+                    .HasName("PK__DrivingS__3DA4677BD8056C69");
 
                 entity.Property(e => e.SchoolId).HasColumnName("SchoolID");
 
@@ -121,13 +121,15 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<EnrollmentRequest>(entity =>
             {
                 entity.HasKey(e => e.EnrollmentId)
-                    .HasName("PK__Enrollme__7F6877FB06FAA797");
+                    .HasName("PK__Enrollme__7F6877FBD4FBBD9F");
 
                 entity.Property(e => e.EnrollmentId).HasColumnName("EnrollmentID");
 
                 entity.Property(e => e.InstructorId).HasColumnName("InstructorID");
 
                 entity.Property(e => e.LessonId).HasColumnName("LessonID");
+
+                entity.Property(e => e.SchoolId).HasColumnName("SchoolID");
 
                 entity.Property(e => e.StatusId).HasColumnName("StatusID");
 
@@ -136,14 +138,17 @@ namespace LicenseServerBL.Models
                 entity.HasOne(d => d.Instructor)
                     .WithMany(p => p.EnrollmentRequests)
                     .HasForeignKey(d => d.InstructorId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_EnrollmentRequestsInstructor");
 
                 entity.HasOne(d => d.Lesson)
                     .WithMany(p => p.EnrollmentRequests)
                     .HasForeignKey(d => d.LessonId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_EnrollmentRequestsLesson");
+
+                entity.HasOne(d => d.School)
+                    .WithMany(p => p.EnrollmentRequests)
+                    .HasForeignKey(d => d.SchoolId)
+                    .HasConstraintName("FK_EnrollmentRequestsDrivingSchool");
 
                 entity.HasOne(d => d.Status)
                     .WithMany(p => p.EnrollmentRequests)
@@ -154,14 +159,13 @@ namespace LicenseServerBL.Models
                 entity.HasOne(d => d.Student)
                     .WithMany(p => p.EnrollmentRequests)
                     .HasForeignKey(d => d.StudentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_EnrollmentRequestsStudent");
             });
 
             modelBuilder.Entity<Estatus>(entity =>
             {
                 entity.HasKey(e => e.StatusId)
-                    .HasName("PK__EStatus__C8EE2043A688B522");
+                    .HasName("PK__EStatus__C8EE2043792A4FB3");
 
                 entity.ToTable("EStatus");
 
@@ -269,6 +273,7 @@ namespace LicenseServerBL.Models
                 entity.HasOne(d => d.EStatus)
                     .WithMany(p => p.Instructors)
                     .HasForeignKey(d => d.EStatusId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_InstructorEStatus");
 
                 entity.HasOne(d => d.Gearbox)
@@ -435,7 +440,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<SchoolManager>(entity =>
             {
                 entity.HasKey(e => e.SmanagerId)
-                    .HasName("PK__SchoolMa__A19B238836CE41E2");
+                    .HasName("PK__SchoolMa__A19B23886A4B676A");
 
                 entity.ToTable("SchoolManager");
 
@@ -445,6 +450,8 @@ namespace LicenseServerBL.Models
                 entity.Property(e => e.SmanagerId).HasColumnName("SManagerID");
 
                 entity.Property(e => e.Birthday).HasColumnType("date");
+
+                entity.Property(e => e.EStatusId).HasColumnName("eStatusId");
 
                 entity.Property(e => e.Email)
                     .IsRequired()
@@ -468,6 +475,12 @@ namespace LicenseServerBL.Models
                     .IsRequired()
                     .HasMaxLength(255)
                     .HasColumnName("SMName");
+
+                entity.HasOne(d => d.EStatus)
+                    .WithMany(p => p.SchoolManagers)
+                    .HasForeignKey(d => d.EStatusId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_SchoolManagerEStatus");
 
                 entity.HasOne(d => d.Gender)
                     .WithMany(p => p.SchoolManagers)
@@ -574,7 +587,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<WorkingHour>(entity =>
             {
                 entity.HasKey(e => e.HourId)
-                    .HasName("PK__WorkingH__18DFA33E63F26171");
+                    .HasName("PK__WorkingH__18DFA33E0F69DB0E");
 
                 entity.Property(e => e.HourId).HasColumnName("HourID");
 

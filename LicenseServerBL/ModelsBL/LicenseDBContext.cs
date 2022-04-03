@@ -253,6 +253,52 @@ namespace LicenseServerBL.Models
             }
             return students;
         }
-        
+
+        public bool ChangeStatusForUser(object u)
+        {
+            try
+            {
+                if (u is Student)
+                {
+                    Student s = (Student)u;
+                    Student student = new Student();
+                    student = this.Students.Where(st => st.StudentId == s.StudentId).FirstOrDefault();
+                    student.EStatusId = s.EStatusId;
+                    this.Students.Update(student);
+
+                    EnrollmentRequest em = this.EnrollmentRequests.Where(e => e.StudentId != null && e.StudentId == student.StudentId).FirstOrDefault();
+                    em.StatusId = (int)student.EStatusId;
+                    this.EnrollmentRequests.Update(em);
+                    this.SaveChanges();
+
+                    return true;
+                }
+
+                else if (u is Instructor)
+                {
+                    Instructor i = (Instructor)u;
+                    Instructor teacher = new Instructor();
+
+                    teacher = this.Instructors.Where(t => t.InstructorId == i.InstructorId).FirstOrDefault();
+                    teacher.EStatusId = i.EStatusId;
+                    this.Instructors.Update(teacher);
+                    this.SaveChanges();
+
+                    EnrollmentRequest em = this.EnrollmentRequests.Where(e => e.StudentId == null && e.InstructorId != null && e.InstructorId == teacher.InstructorId).FirstOrDefault();
+                    em.StatusId = (int)teacher.EStatusId;
+                    this.EnrollmentRequests.Update(em);
+                    this.SaveChanges();
+
+                    return true;
+                }
+
+                else { return false; }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
     }
 }

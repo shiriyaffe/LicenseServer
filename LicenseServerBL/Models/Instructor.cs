@@ -34,7 +34,7 @@ namespace LicenseServerBL.Models
         public DateTime RegistrationDate { get; set; }
         public string StartTime { get; set; }
         public string EndTime { get; set; }
-        public int? EStatusId { get; set; }
+        public int EStatusId { get; set; }
 
         public virtual Area Area { get; set; }
         public virtual DrivingSchool DrivingSchool { get; set; }

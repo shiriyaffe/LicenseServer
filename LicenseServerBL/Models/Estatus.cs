@@ -11,6 +11,7 @@ namespace LicenseServerBL.Models
         {
             EnrollmentRequests = new HashSet<EnrollmentRequest>();
             Instructors = new HashSet<Instructor>();
+            SchoolManagers = new HashSet<SchoolManager>();
             Students = new HashSet<Student>();
         }
 
@@ -19,6 +20,7 @@ namespace LicenseServerBL.Models
 
         public virtual ICollection<EnrollmentRequest> EnrollmentRequests { get; set; }
         public virtual ICollection<Instructor> Instructors { get; set; }
+        public virtual ICollection<SchoolManager> SchoolManagers { get; set; }
         public virtual ICollection<Student> Students { get; set; }
     }
 }
