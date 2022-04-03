@@ -30,8 +30,10 @@ namespace LicenseServerBL.Models
         public int? InstructorId { get; set; }
         public int LessonsCount { get; set; }
         public DateTime RegistrationDate { get; set; }
+        public int? EStatusId { get; set; }
 
         public virtual City City { get; set; }
+        public virtual Estatus EStatus { get; set; }
         public virtual Gearbox Gearbox { get; set; }
         public virtual Gender Gender { get; set; }
         public virtual Instructor Instructor { get; set; }
