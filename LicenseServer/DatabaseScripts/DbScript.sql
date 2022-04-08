@@ -69,8 +69,9 @@ CREATE TABLE DrivingSchools(
     AreaID INT NOT NULL,
 	CONSTRAINT FK_SchoolManagerArea FOREIGN KEY(AreaID) REFERENCES Area(AreaID),
     EstablishmentYear INT NOT NULL,
-    NumOfTeachers INT NOT NULL,
+    NumOfTeachers INT NOT NULL
 );
+
 
 CREATE TABLE SchoolManager(
     SManagerID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
@@ -83,7 +84,9 @@ CREATE TABLE SchoolManager(
     Birthday DATE,
     SchoolID INT,
     CONSTRAINT FK_SchoolManagerDrivingSchools FOREIGN KEY(SchoolID) REFERENCES DrivingSchools(SchoolID),
-    RegistrationDate DATETIME NOT NULL
+    RegistrationDate DATETIME NOT NULL,
+    eStatusId int NOT NULL,
+    CONSTRAINT FK_SchoolManagerEStatus FOREIGN KEY(eStatusId) REFERENCES EStatus(StatusID)
 );
 CREATE UNIQUE INDEX schoolmanager_email_unique ON
     SchoolManager(Email);
@@ -174,14 +177,16 @@ CREATE TABLE Lesson(
 
 CREATE TABLE EnrollmentRequests(
     EnrollmentID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
-    LessonID INT NOT NULL,
+    LessonID INT NULL,
 	CONSTRAINT FK_EnrollmentRequestsLesson FOREIGN KEY(LessonID) REFERENCES Lesson(LessonID),
     StatusID INT NOT NULL,
 	CONSTRAINT FK_EnrollmentRequestsEStatus FOREIGN KEY(StatusID) REFERENCES EStatus(StatusID),
-    StudentID INT NOT NULL,
+    StudentID INT NULL,
 	CONSTRAINT FK_EnrollmentRequestsStudent FOREIGN KEY(StudentID) REFERENCES Student(StudentID),
-	InstructorID INT NOT NULL,
-	CONSTRAINT FK_EnrollmentRequestsInstructor FOREIGN KEY(InstructorID) REFERENCES Instructor(InstructorID)
+	InstructorID INT NULL,
+	CONSTRAINT FK_EnrollmentRequestsInstructor FOREIGN KEY(InstructorID) REFERENCES Instructor(InstructorID),
+    SchoolID INT NULL,
+	CONSTRAINT FK_EnrollmentRequestsDrivingSchool FOREIGN KEY(SchoolID) REFERENCES DrivingSchools(SchoolID)
 );
 
 CREATE TABLE InstructorReviews(
@@ -468,6 +473,21 @@ VALUES (N'נצרת',1);
 INSERT INTO City([CityName], [AreaID])
 VALUES (N'כפר שמריהו', 3);
 
+INSERT INTO DrivingSchools([SchoolName],[AreaID],[EstablishmentYear],[NumOfTeachers])
+VALUES (N'GalDa',3,2017,18);
+
+INSERT INTO SchoolManager([SMName],[SchoolID],[RegistrationDate],[PhoneNumber],[Pass],[GenderID],[Email],[Birthday], [eStatusId])
+VALUES (N'גל דודזון',1,CAST(N'2021-1-10 12:23:00.000' AS DateTime),0545403304,13579,1,N'GalDa@gmail.com',CAST(N'1950-08-13' AS Date),2);
+
+Insert INTO Instructor([IName],[Email],[Pass],[PhoneNumber],[GenderID],[Birthday],[AreaID],[Details],[DrivingSchoolID],[GearboxID],[LessonLengthID],[LicenseTypeID],[Price],[RateID],[RegistrationDate],[SchoolManagerID],[StartTime],[EndTime],[eStatusId])
+VALUES (N'נוי גנור', N'noiganor@gmail.com', N'24680', N'0505689857',1, CAST(N'1954-08-24' AS Date), 3, N'התחלתי ללמד נהיגה לפני 15 שנה, כאשר 5 מתוכם בבית הספר לנהיגה הנוכחי. פנויה לתלמידים חדשים', 1, 1,3,1,200, 4, CAST(N'2021-1-17 8:23:00.000' AS DateTime),2,N'07:00',N'20:00', 2);
+
+Insert INTO Instructor([IName],[Email],[Pass],[PhoneNumber],[GenderID],[Birthday],[AreaID],[Details],[DrivingSchoolID],[GearboxID],[LessonLengthID],[LicenseTypeID],[Price],[RateID],[RegistrationDate],[SchoolManagerID],[StartTime],[EndTime],[eStatusId])
+VALUES (N'יולי לוי', N'yulilev@gmail.com', N'67890', N'0542130122',1, CAST(N'1960-07-02' AS Date), 3, N'התחלתי ללמד נהיגה בתור תחביב, כעבודה מהצד, ולאחר 20 שנה, התאהבתי במקצוע והחלתי לעבוד בו במשרה מלאה. פנויה לתלמידים לדשים', 1, 1,3,1,210, 4, CAST(N'2021-1-23 10:04:00.000' AS DateTime),2,N'08:00',N'21:00', 1);
+
+Insert INTO Student([SName],[Email], [Pass],[PhoneNumber], [GenderID], [Birthday], [CityID], [SAddress], [GearboxID], [LicenseTypeID], [TeacherGender], [HighestPrice], [LessonsCount], [RegistrationDate], [LessonLengthID], [InstructorID],[eStatusId])
+VALUES (N'שירי יפה', N'6363shiri@gmail.com', N'123456', N'0534261684',1, CAST(N'2004-09-22' AS Date), 20, N'תמוז 6', 1, 1, 1, 220, 0, CAST(N'2021-12-12 8:23:00.000' AS DateTime), 3, 3, 2);
+
 INSERT INTO EStatus(StatusMeaning)
 VALUES (N'בהמתנה');
 
@@ -477,17 +497,7 @@ VALUES (N'מאושר');
 INSERT INTO EStatus(StatusMeaning)
 VALUES (N'נדחה');
 
-INSERT INTO DrivingSchools([SchoolName],[AreaID],[EstablishmentYear],[NumOfTeachers])
-VALUES (N'GalDa',3,2017,18);
+INSERT INTO EStatus(StatusMeaning)
+VALUES (N'סטטוס לא קיים');
 
-INSERT INTO SchoolManager([SMName],[SchoolID],[RegistrationDate],[PhoneNumber],[Pass],[GenderID],[Email],[Birthday])
-VALUES (N'גל דודזון',1,CAST(N'2021-1-10 12:23:00.000' AS DateTime),0545403304,13579,1,N'GalDa@gmail.com',CAST(N'1950-08-13' AS Date));
-
-Insert INTO Instructor([IName],[Email],[Pass],[PhoneNumber],[GenderID],[Birthday],[AreaID],[Details],[DrivingSchoolID],[GearboxID],[LessonLengthID],[LicenseTypeID],[Price],[RateID],[RegistrationDate],[SchoolManagerID],[StartTime],[EndTime],[eStatusId])
-VALUES (N'נוי גנור', N'noiganor@gmail.com', N'24680', N'0505689857',1, CAST(N'1954-08-24' AS Date), 3, N'התחלתי ללמד נהיגה לפני 15 שנה, כאשר 5 מתוכם בבית הספר לנהיגה הנוכחי. פנויה לתלמידים חדשים', 1, 1,3,1,200, 4, CAST(N'2021-1-17 8:23:00.000' AS DateTime),1,N'07:00',N'20:00', 2);
-
-Insert INTO Instructor([IName],[Email],[Pass],[PhoneNumber],[GenderID],[Birthday],[AreaID],[Details],[DrivingSchoolID],[GearboxID],[LessonLengthID],[LicenseTypeID],[Price],[RateID],[RegistrationDate],[SchoolManagerID],[StartTime],[EndTime],[eStatusId])
-VALUES (N'יולי לוי', N'yulilev@gmail.com', N'67890', N'0542130122',1, CAST(N'1960-07-02' AS Date), 3, N'התחלתי ללמד נהיגה בתור תחביב, כעבודה מהצד, ולאחר 20 שנה, התאהבתי במקצוע והחלתי לעבוד בו במשרה מלאה. פנויה לתלמידים לדשים', 1, 1,3,1,210, 4, CAST(N'2021-1-23 10:04:00.000' AS DateTime),1,N'08:00',N'21:00', 1);
-
-Insert INTO Student([SName],[Email], [Pass],[PhoneNumber], [GenderID], [Birthday], [CityID], [SAddress], [GearboxID], [LicenseTypeID], [TeacherGender], [HighestPrice], [LessonsCount], [RegistrationDate], [LessonLengthID], [InstructorID],[eStatusId])
-VALUES (N'שירי יפה', N'6363shiri@gmail.com', N'123456', N'0534261684',1, CAST(N'2004-09-22' AS Date), 20, N'תמוז 6', 1, 1, 1, 220, 0, CAST(N'2021-12-12 8:23:00.000' AS DateTime), 3, 3, 2);
+Select * from Instructor;

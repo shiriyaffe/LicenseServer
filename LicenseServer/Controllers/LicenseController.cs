@@ -345,7 +345,7 @@ namespace LicenseServer.Controllers
                 return null;
             }
         }
-        
+
 
         [Route("AddEnrollmentRequest")]
         [HttpPost]
@@ -426,7 +426,7 @@ namespace LicenseServer.Controllers
                 Genders = context.Genders.ToList(),
                 LicenseTypes = context.LicenseTypes.ToList(),
                 LessonLengths = context.LessonLengths.ToList(),
-                
+                Status = context.Estatuses.ToList(),
                 WorkingHours = context.WorkingHours.ToList()
             };
             return tables;
@@ -547,6 +547,37 @@ namespace LicenseServer.Controllers
             }
 
             return students;
+        }
+
+        [Route("ChangeInstructorStatus")]
+        [HttpPost]
+        public bool ChangeInstructorStatus(Instructor i)
+        {
+            User user = HttpContext.Session.GetObject<User>("theUser");
+
+            if (user != null)
+            {
+                bool ok = this.context.ChangeStatusForUser(i);
+
+                if (ok)
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                    return true;
+                }
+                else
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.NotModified;
+                    return false;
+                }
+            }
+
+            else
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                return false;
+            }
+
+
         }
     }
 }
