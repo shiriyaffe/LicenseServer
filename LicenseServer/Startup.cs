@@ -54,22 +54,30 @@ namespace LicenseServer
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
+        { 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.Use(async (context, next) =>
+            try
             {
-                await next();
-                if (context.Response.StatusCode == (int)System.Net.HttpStatusCode.NotFound &&
-                context.Request.Path.Value.Contains("jpg"))
+                app.Use(async (context, next) =>
                 {
-                    context.Request.Path = new PathString(@"defaultPhoto.png");
                     await next();
-                }
-            });
+                    if (context.Response.StatusCode == (int)System.Net.HttpStatusCode.NotFound &&
+                    context.Request.Path.Value.Contains("jpg"))
+                    {
+                        context.Request.Path = new PathString(@"defaultPhoto.png");
+                        await next();
+                    }
+                });
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return;
+            }
 
             app.UseStaticFiles(); //Added to have the wwwroot folder and server to accept calls to static files
             app.UseRouting();

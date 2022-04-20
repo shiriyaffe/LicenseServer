@@ -34,6 +34,7 @@ namespace LicenseServerBL.Models
         public virtual DbSet<Review> Reviews { get; set; }
         public virtual DbSet<SchoolManager> SchoolManagers { get; set; }
         public virtual DbSet<Student> Students { get; set; }
+        public virtual DbSet<StudentSummary> StudentSummarys { get; set; }
         public virtual DbSet<WorkingHour> WorkingHours { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -52,7 +53,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<AppAdmin>(entity =>
             {
                 entity.HasKey(e => e.AdminId)
-                    .HasName("PK__AppAdmin__719FE4E8FCA30465");
+                    .HasName("PK__AppAdmin__719FE4E8DA856E53");
 
                 entity.ToTable("AppAdmin");
 
@@ -101,7 +102,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<DrivingSchool>(entity =>
             {
                 entity.HasKey(e => e.SchoolId)
-                    .HasName("PK__DrivingS__3DA4677BD8056C69");
+                    .HasName("PK__DrivingS__3DA4677BF4E4E6E5");
 
                 entity.Property(e => e.SchoolId).HasColumnName("SchoolID");
 
@@ -121,7 +122,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<EnrollmentRequest>(entity =>
             {
                 entity.HasKey(e => e.EnrollmentId)
-                    .HasName("PK__Enrollme__7F6877FBD4FBBD9F");
+                    .HasName("PK__Enrollme__7F6877FB86F19A91");
 
                 entity.Property(e => e.EnrollmentId).HasColumnName("EnrollmentID");
 
@@ -165,7 +166,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<Estatus>(entity =>
             {
                 entity.HasKey(e => e.StatusId)
-                    .HasName("PK__EStatus__C8EE2043792A4FB3");
+                    .HasName("PK__EStatus__C8EE2043FD3CEEAC");
 
                 entity.ToTable("EStatus");
 
@@ -250,8 +251,6 @@ namespace LicenseServerBL.Models
 
                 entity.Property(e => e.RegistrationDate).HasColumnType("datetime");
 
-                entity.Property(e => e.ReviewId).HasColumnName("ReviewID");
-
                 entity.Property(e => e.SchoolManagerId).HasColumnName("SchoolManagerID");
 
                 entity.Property(e => e.StartTime)
@@ -303,13 +302,7 @@ namespace LicenseServerBL.Models
                 entity.HasOne(d => d.Rate)
                     .WithMany(p => p.Instructors)
                     .HasForeignKey(d => d.RateId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_InstructorRate");
-
-                entity.HasOne(d => d.Review)
-                    .WithMany(p => p.Instructors)
-                    .HasForeignKey(d => d.ReviewId)
-                    .HasConstraintName("FK_InstructorReview");
 
                 entity.HasOne(d => d.SchoolManager)
                     .WithMany(p => p.Instructors)
@@ -319,33 +312,24 @@ namespace LicenseServerBL.Models
 
             modelBuilder.Entity<InstructorReview>(entity =>
             {
-                entity.HasNoKey();
-
-                entity.Property(e => e.InstructorId).HasColumnName("InstructorID");
+                entity.HasKey(e => new { e.ReviewId, e.InstructorId })
+                    .HasName("PK_InstructorReview");
 
                 entity.Property(e => e.ReviewId).HasColumnName("ReviewID");
 
-                entity.Property(e => e.StudentId).HasColumnName("StudentID");
-
-                entity.Property(e => e.TimeReview).HasColumnType("datetime");
+                entity.Property(e => e.InstructorId).HasColumnName("InstructorID");
 
                 entity.HasOne(d => d.Instructor)
-                    .WithMany()
+                    .WithMany(p => p.InstructorReviews)
                     .HasForeignKey(d => d.InstructorId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_InstructorReviewsInstructor");
 
                 entity.HasOne(d => d.Review)
-                    .WithMany()
+                    .WithMany(p => p.InstructorReviews)
                     .HasForeignKey(d => d.ReviewId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_InstructorReviewsReview");
-
-                entity.HasOne(d => d.Student)
-                    .WithMany()
-                    .HasForeignKey(d => d.StudentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_InstructorReviewsStudent");
             });
 
             modelBuilder.Entity<Lesson>(entity =>
@@ -353,6 +337,8 @@ namespace LicenseServerBL.Models
                 entity.ToTable("Lesson");
 
                 entity.Property(e => e.LessonId).HasColumnName("LessonID");
+
+                entity.Property(e => e.EStatusId).HasColumnName("eStatusId");
 
                 entity.Property(e => e.InstructorId).HasColumnName("InstructorID");
 
@@ -365,11 +351,15 @@ namespace LicenseServerBL.Models
                     .HasMaxLength(255)
                     .HasColumnName("LDay");
 
-                entity.Property(e => e.Ltime).HasColumnName("LTime");
-
                 entity.Property(e => e.ReviewId).HasColumnName("ReviewID");
 
                 entity.Property(e => e.StuudentId).HasColumnName("StuudentID");
+
+                entity.HasOne(d => d.EStatus)
+                    .WithMany(p => p.Lessons)
+                    .HasForeignKey(d => d.EStatusId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_LessonEStatus");
 
                 entity.HasOne(d => d.Instructor)
                     .WithMany(p => p.Lessons)
@@ -380,7 +370,6 @@ namespace LicenseServerBL.Models
                 entity.HasOne(d => d.Review)
                     .WithMany(p => p.Lessons)
                     .HasForeignKey(d => d.ReviewId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_LessonReview");
 
                 entity.HasOne(d => d.Stuudent)
@@ -435,12 +424,16 @@ namespace LicenseServerBL.Models
                 entity.Property(e => e.Content)
                     .IsRequired()
                     .HasMaxLength(255);
+
+                entity.Property(e => e.WrittenOn)
+                    .HasColumnType("date")
+                    .HasColumnName("writtenOn");
             });
 
             modelBuilder.Entity<SchoolManager>(entity =>
             {
                 entity.HasKey(e => e.SmanagerId)
-                    .HasName("PK__SchoolMa__A19B23886A4B676A");
+                    .HasName("PK__SchoolMa__A19B2388BC1DA200");
 
                 entity.ToTable("SchoolManager");
 
@@ -584,10 +577,32 @@ namespace LicenseServerBL.Models
                     .HasConstraintName("FK_StudentLicenseType");
             });
 
+            modelBuilder.Entity<StudentSummary>(entity =>
+            {
+                entity.HasKey(e => new { e.ReviewId, e.StudentId })
+                    .HasName("PK_StudentReview");
+
+                entity.Property(e => e.ReviewId).HasColumnName("ReviewID");
+
+                entity.Property(e => e.StudentId).HasColumnName("StudentID");
+
+                entity.HasOne(d => d.Review)
+                    .WithMany(p => p.StudentSummaries)
+                    .HasForeignKey(d => d.ReviewId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_InstructorStudentSummarys");
+
+                entity.HasOne(d => d.Student)
+                    .WithMany(p => p.StudentSummaries)
+                    .HasForeignKey(d => d.StudentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_StudentStudentSummarys");
+            });
+
             modelBuilder.Entity<WorkingHour>(entity =>
             {
                 entity.HasKey(e => e.HourId)
-                    .HasName("PK__WorkingH__18DFA33E0F69DB0E");
+                    .HasName("PK__WorkingH__18DFA33E7BC74E41");
 
                 entity.Property(e => e.HourId).HasColumnName("HourID");
 

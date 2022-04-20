@@ -11,6 +11,7 @@ namespace LicenseServerBL.Models
         {
             EnrollmentRequests = new HashSet<EnrollmentRequest>();
             Lessons = new HashSet<Lesson>();
+            StudentSummaries = new HashSet<StudentSummary>();
         }
 
         public int StudentId { get; set; }
@@ -41,5 +42,6 @@ namespace LicenseServerBL.Models
         public virtual LicenseType LicenseType { get; set; }
         public virtual ICollection<EnrollmentRequest> EnrollmentRequests { get; set; }
         public virtual ICollection<Lesson> Lessons { get; set; }
+        public virtual ICollection<StudentSummary> StudentSummaries { get; set; }
     }
 }

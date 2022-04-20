@@ -9,14 +9,17 @@ namespace LicenseServerBL.Models
     {
         public Review()
         {
-            Instructors = new HashSet<Instructor>();
+            InstructorReviews = new HashSet<InstructorReview>();
             Lessons = new HashSet<Lesson>();
+            StudentSummaries = new HashSet<StudentSummary>();
         }
 
         public int ReviewId { get; set; }
         public string Content { get; set; }
+        public DateTime WrittenOn { get; set; }
 
-        public virtual ICollection<Instructor> Instructors { get; set; }
+        public virtual ICollection<InstructorReview> InstructorReviews { get; set; }
         public virtual ICollection<Lesson> Lessons { get; set; }
+        public virtual ICollection<StudentSummary> StudentSummaries { get; set; }
     }
 }

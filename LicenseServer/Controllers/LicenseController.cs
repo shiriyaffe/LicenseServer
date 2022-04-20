@@ -23,6 +23,8 @@ namespace LicenseServer.Controllers
             this.context = context;
         }
 
+        private const int WAITING_STATUS = 1;
+
         [Route("SayHello")]
         [HttpGet]
         public string SayHello()
@@ -57,7 +59,7 @@ namespace LicenseServer.Controllers
         [HttpPost]
         public Student SignUpStudent([FromBody] Student student)
         {
-            if(student != null)
+            if (student != null)
             {
                 bool signedUp = this.context.AddStudent(student);
                 if (signedUp)
@@ -65,7 +67,7 @@ namespace LicenseServer.Controllers
                     HttpContext.Session.SetObject("theUser", student);
 
                     var pathFrom = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images", "defaultPhoto.png");
-                    var pathTo = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images", $"{student.StudentId}.jpg");
+                    var pathTo = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images/Students", $"{student.StudentId}.jpg");
                     System.IO.File.Copy(pathFrom, pathTo);
 
                     Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
@@ -172,6 +174,9 @@ namespace LicenseServer.Controllers
                 if (signedUp)
                 {
                     HttpContext.Session.SetObject("theUser", instructor);
+                    var pathFrom = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images", "defaultPhoto.png");
+                    var pathTo = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images/Instructors", $"{instructor.InstructorId}.jpg");
+                    System.IO.File.Copy(pathFrom, pathTo);
                     Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
                     //Important! Due to the Lazy Loading, the user will be returned with all of its contects!!
                     return instructor;
@@ -230,7 +235,7 @@ namespace LicenseServer.Controllers
         [HttpGet]
         public string GetAreaName([FromQuery] int areaId)
         {
-            foreach(Area a in context.Areas)
+            foreach (Area a in context.Areas)
             {
                 if (a.AreaId == areaId)
                     return a.AreaName;
@@ -308,6 +313,10 @@ namespace LicenseServer.Controllers
                 if (signedUp)
                 {
                     HttpContext.Session.SetObject("theUser", sManager);
+
+                    var pathFrom = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images", "defaultPhoto.png");
+                    var pathTo = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images/SchoolManagers", $"{sManager.SmanagerId}.jpg");
+                    System.IO.File.Copy(pathFrom, pathTo);
                     Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
                     //Important! Due to the Lazy Loading, the user will be returned with all of its contects!!
                     return sManager;
@@ -371,17 +380,89 @@ namespace LicenseServer.Controllers
             }
         }
 
+        [Route("AddSummary")]
+        [HttpPost]
+        public StudentSummary AddSummary([FromBody] StudentSummary summary)
+        {
+            if (summary != null)
+            {
+                bool added = this.context.AddSummary(summary);
+                if (added)
+                {
+                    HttpContext.Session.SetObject("theUser", summary);
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                    //Important! Due to the Lazy Loading, the user will be returned with all of its contects!!
+                    return summary;
+                }
+                else
+                    return null;
+            }
+            else
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                return null;
+            }
+        }
+
+        [Route("AddInstructorReview")]
+        [HttpPost]
+        public InstructorReview AddInstructorReview([FromBody] InstructorReview review)
+        {
+            if (review != null)
+            {
+                bool added = this.context.AddInstructorReview(review);
+                if (added)
+                {
+                    HttpContext.Session.SetObject("theUser", review);
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                    //Important! Due to the Lazy Loading, the user will be returned with all of its contects!!
+                    return review;
+                }
+                else
+                    return null;
+            }
+            else
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                return null;
+            }
+        }
+
+        [Route("AddReview")]
+        [HttpPost]
+        public Review AddReview([FromBody] Review review)
+        {
+            if (review != null)
+            {
+                bool added = this.context.AddReview(review);
+                if (added)
+                {
+                    HttpContext.Session.SetObject("theUser", review);
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                    //Important! Due to the Lazy Loading, the user will be returned with all of its contects!!
+                    return review;
+                }
+                else
+                    return null;
+            }
+            else
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                return null;
+            }
+        }
+
 
         [Route("GetInstructors")]
         [HttpGet]
         public ObservableCollection<Instructor> GetInstructors()
         {
             ObservableCollection<Instructor> instructors = new ObservableCollection<Instructor>();
-            foreach(Instructor i in context.Instructors)
+            foreach (Instructor i in context.Instructors)
             {
                 instructors.Add(i);
             }
-            
+
             return instructors;
         }
 
@@ -392,11 +473,29 @@ namespace LicenseServer.Controllers
             ObservableCollection<Lesson> lessons = new ObservableCollection<Lesson>();
             foreach (Lesson l in context.Lessons)
             {
-                if (l.StuudentId == studentId && l.HasDone)
+                if (l.StuudentId == studentId)
                     lessons.Add(l);
             }
 
             return lessons;
+        }
+
+        [Route("GetInstructorReviews")]
+        [HttpGet]
+        public ObservableCollection<Review> GetReviews([FromQuery] int instructorID)
+        {
+            ObservableCollection<Review> reviews = new ObservableCollection<Review>();
+            List<InstructorReview> list = context.InstructorReviews.ToList();
+            foreach (InstructorReview l in list)
+            {
+                if(l.InstructorId == instructorID)
+                {
+                    Review rev = context.Reviews.Where(r => r.ReviewId == l.ReviewId).FirstOrDefault();
+                    reviews.Add(rev);
+                }
+            }
+
+            return reviews;
         }
 
         [Route("GetStudentsByInstructor")]
@@ -408,6 +507,21 @@ namespace LicenseServer.Controllers
             {
                 if (s.InstructorId == instructorId)
                     students.Add(s);
+            }
+
+            return students;
+        }
+
+        [Route("GetAllWaitingStudentsByInstructor")]
+        [HttpGet]
+        public ObservableCollection<Student> GetAllWaitingStudentsByInstructor([FromQuery] int instructorId)
+        {
+            ObservableCollection<Student> students = new ObservableCollection<Student>();
+            List<EnrollmentRequest> enrollmentRequests = context.GetEnrollments();
+            foreach (EnrollmentRequest em in enrollmentRequests)
+            {
+                if (em.InstructorId == instructorId && em.StudentId != null && em.StatusId == WAITING_STATUS)
+                    students.Add(em.Student);
             }
 
             return students;
@@ -533,9 +647,9 @@ namespace LicenseServer.Controllers
             List<Student> students1 = context.Students.ToList<Student>();
             foreach (Student s in students1)
             {
-                if(s.InstructorId != null && s.InstructorId > 0)
+                if (s.InstructorId != null && s.InstructorId > 0)
                 {
-                    foreach(Instructor i in context.Instructors)
+                    foreach (Instructor i in context.Instructors)
                     {
                         if (i.InstructorId == s.InstructorId)
                         {
@@ -544,6 +658,8 @@ namespace LicenseServer.Controllers
                         }
                     }
                 }
+                else
+                    students.Remove(s);
             }
 
             return students;
@@ -553,31 +669,125 @@ namespace LicenseServer.Controllers
         [HttpPost]
         public bool ChangeInstructorStatus(Instructor i)
         {
-            User user = HttpContext.Session.GetObject<User>("theUser");
-
-            if (user != null)
+            try
             {
-                bool ok = this.context.ChangeStatusForUser(i);
+                User user = HttpContext.Session.GetObject<User>("theUser");
 
-                if (ok)
+                if (user != null)
                 {
-                    Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
-                    return true;
+                    bool ok = this.context.ChangeStatusForUser(i);
+
+                    if (ok)
+                    {
+                        Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                        return true;
+                    }
+                    else
+                    {
+                        Response.StatusCode = (int)System.Net.HttpStatusCode.NotModified;
+                        return false;
+                    }
                 }
+
                 else
                 {
-                    Response.StatusCode = (int)System.Net.HttpStatusCode.NotModified;
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
                     return false;
                 }
             }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
 
+        [Route("ChangeStudentStatus")]
+        [HttpPost]
+        public bool ChangeStudentStatus(Student s)
+        {
+            try
+            {
+                User user = HttpContext.Session.GetObject<User>("theUser");
+
+                if (user != null)
+                {
+                    bool ok = this.context.ChangeStatusForUser(s);
+
+                    if (ok)
+                    {
+                        Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                        return true;
+                    }
+                    else
+                    {
+                        Response.StatusCode = (int)System.Net.HttpStatusCode.NotModified;
+                        return false;
+                    }
+                }
+
+                else
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        [Route("UpdateLessonSum")]
+        [HttpPost]
+        public Lesson UpdateLessonSum([FromBody] Lesson lesson)
+        {
+            //If user is null the request is bad
+            if (lesson == null)
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
+                return null;
+            }
+
+            Lesson current = context.Lessons.Where(l => l.LessonId == lesson.LessonId).FirstOrDefault();
+            if(current != null)
+            {
+                Lesson updatedLesson = context.UpdateLesson(current, lesson);
+
+                if (updatedLesson == null)
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                    return null;
+                }
+
+                Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                return updatedLesson;
+
+                ////Now check if an image exist for the contact (photo). If not, set the default image!
+                //var sourcePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", DEFAULT_PHOTO);
+                //var targetPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", $"{user.Id}.jpg");
+                //System.IO.File.Copy(sourcePath, targetPath);
+
+                //return the contact with its new ID if that was a new contact
+            }
             else
             {
                 Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
-                return false;
+                return null;
             }
+        }
 
-
+        [Route("GetInstructorById")]
+        [HttpGet]
+        public Instructor GetInstructorById([FromQuery] int instructorId)
+        {
+            foreach (Instructor i in context.Instructors)
+            {
+                if (i.InstructorId == instructorId)
+                    return i;
+            }
+            return null;
         }
     }
 }

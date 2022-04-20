@@ -12,6 +12,8 @@ namespace LicenseServerBL.Models
 {
     public partial class LicenseDBContext : DbContext
     {
+        const int APPROVED = 2;
+
         public Object Login(string email, string pass)
         {
             Student student = new Student();
@@ -138,6 +140,51 @@ namespace LicenseServerBL.Models
             }
         }
 
+        public bool AddSummary(StudentSummary summary)
+        {
+            try
+            {
+                this.StudentSummarys.Add(summary);
+                this.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public bool AddInstructorReview(InstructorReview review)
+        {
+            try
+            {
+                this.InstructorReviews.Add(review);
+                this.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public bool AddReview(Review review)
+        {
+            try
+            {
+                this.Reviews.Add(review);
+                this.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
         public Student UpdateStudent(Student student, Student updatedStudent)
         {
             try
@@ -247,11 +294,27 @@ namespace LicenseServerBL.Models
         public ObservableCollection<Student> GetAllStudents()
         {
             ObservableCollection<Student> students = new ObservableCollection<Student>();
-            for (int i = 1; i == this.Students.Count(); i++)
+            foreach(Student s in this.Students.Include(p => p.Instructor))
             {
-                students.Add(this.Students.Include(s => s.Instructor).Where(s => s.StudentId == i).FirstOrDefault());
+                students.Add(s);
             }
             return students;
+        }
+
+        public List<EnrollmentRequest> GetEnrollments()
+        {
+            return this.EnrollmentRequests.Include(em => em.Student).ToList();
+        }
+
+        private int GetManagerID(int schoolId)
+        {
+            SchoolManager manager = new SchoolManager();
+            foreach(SchoolManager sm in this.SchoolManagers)
+            {
+                if (sm.SchoolId == schoolId)
+                    return sm.SmanagerId;
+            }
+            return 0;
         }
 
         public bool ChangeStatusForUser(object u)
@@ -267,8 +330,17 @@ namespace LicenseServerBL.Models
                     this.Students.Update(student);
 
                     EnrollmentRequest em = this.EnrollmentRequests.Where(e => e.StudentId != null && e.StudentId == student.StudentId).FirstOrDefault();
-                    em.StatusId = (int)student.EStatusId;
-                    this.EnrollmentRequests.Update(em);
+                    if (em != null)
+                    {
+                        em.StatusId = (int)student.EStatusId;
+                        this.EnrollmentRequests.Update(em);
+
+                        if(s.EStatusId == APPROVED)
+                        {
+                            student.InstructorId = em.InstructorId;
+                            this.Students.Update(student);
+                        }
+                    }
                     this.SaveChanges();
 
                     return true;
@@ -281,8 +353,12 @@ namespace LicenseServerBL.Models
 
                     teacher = this.Instructors.Where(t => t.InstructorId == i.InstructorId).FirstOrDefault();
                     teacher.EStatusId = i.EStatusId;
+                    if (i.EStatusId == APPROVED)
+                    {
+                        int managerId = GetManagerID(i.DrivingSchoolId);
+                        teacher.SchoolManagerId = managerId;
+                    }
                     this.Instructors.Update(teacher);
-                    this.SaveChanges();
 
                     EnrollmentRequest em = this.EnrollmentRequests.Where(e => e.StudentId == null && e.InstructorId != null && e.InstructorId == teacher.InstructorId).FirstOrDefault();
                     em.StatusId = (int)teacher.EStatusId;
@@ -298,6 +374,22 @@ namespace LicenseServerBL.Models
             {
                 Console.WriteLine(e.Message);
                 return false;
+            }
+        }
+
+        public Lesson UpdateLesson(Lesson lesson, Lesson updatedLesson)
+        {
+            try
+            {
+                lesson.ReviewId = updatedLesson.ReviewId;
+
+                this.SaveChanges();
+                return lesson;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
             }
         }
     }

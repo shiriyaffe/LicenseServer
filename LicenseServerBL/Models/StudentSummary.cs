@@ -5,12 +5,12 @@ using System.Collections.Generic;
 
 namespace LicenseServerBL.Models
 {
-    public partial class InstructorReview
+    public partial class StudentSummary
     {
         public int ReviewId { get; set; }
-        public int InstructorId { get; set; }
+        public int StudentId { get; set; }
 
-        public virtual Instructor Instructor { get; set; }
         public virtual Review Review { get; set; }
+        public virtual Student Student { get; set; }
     }
 }
