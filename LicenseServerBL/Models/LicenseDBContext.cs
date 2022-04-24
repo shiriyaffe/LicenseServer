@@ -53,7 +53,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<AppAdmin>(entity =>
             {
                 entity.HasKey(e => e.AdminId)
-                    .HasName("PK__AppAdmin__719FE4E8DA856E53");
+                    .HasName("PK__AppAdmin__719FE4E8B27A8F68");
 
                 entity.ToTable("AppAdmin");
 
@@ -102,7 +102,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<DrivingSchool>(entity =>
             {
                 entity.HasKey(e => e.SchoolId)
-                    .HasName("PK__DrivingS__3DA4677BF4E4E6E5");
+                    .HasName("PK__DrivingS__3DA4677B6E8E341C");
 
                 entity.Property(e => e.SchoolId).HasColumnName("SchoolID");
 
@@ -122,7 +122,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<EnrollmentRequest>(entity =>
             {
                 entity.HasKey(e => e.EnrollmentId)
-                    .HasName("PK__Enrollme__7F6877FB86F19A91");
+                    .HasName("PK__Enrollme__7F6877FB9A127AA7");
 
                 entity.Property(e => e.EnrollmentId).HasColumnName("EnrollmentID");
 
@@ -166,7 +166,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<Estatus>(entity =>
             {
                 entity.HasKey(e => e.StatusId)
-                    .HasName("PK__EStatus__C8EE2043FD3CEEAC");
+                    .HasName("PK__EStatus__C8EE2043E96848F7");
 
                 entity.ToTable("EStatus");
 
@@ -351,6 +351,11 @@ namespace LicenseServerBL.Models
                     .HasMaxLength(255)
                     .HasColumnName("LDay");
 
+                entity.Property(e => e.Ltime)
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .HasColumnName("LTime");
+
                 entity.Property(e => e.ReviewId).HasColumnName("ReviewID");
 
                 entity.Property(e => e.StuudentId).HasColumnName("StuudentID");
@@ -433,7 +438,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<SchoolManager>(entity =>
             {
                 entity.HasKey(e => e.SmanagerId)
-                    .HasName("PK__SchoolMa__A19B2388BC1DA200");
+                    .HasName("PK__SchoolMa__A19B23889D7033FB");
 
                 entity.ToTable("SchoolManager");
 
@@ -602,7 +607,7 @@ namespace LicenseServerBL.Models
             modelBuilder.Entity<WorkingHour>(entity =>
             {
                 entity.HasKey(e => e.HourId)
-                    .HasName("PK__WorkingH__18DFA33E7BC74E41");
+                    .HasName("PK__WorkingH__18DFA33E97FD3A1E");
 
                 entity.Property(e => e.HourId).HasColumnName("HourID");
 

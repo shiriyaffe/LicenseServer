@@ -392,5 +392,31 @@ namespace LicenseServerBL.Models
                 return null;
             }
         }
+
+        public Lesson CancelLesson(Lesson lesson, Lesson cancelLesson)
+        {
+            try
+            {
+                lesson.IsAvailable = cancelLesson.IsAvailable;
+                lesson.IsPaid = cancelLesson.IsPaid;
+                lesson.HasDone = cancelLesson.HasDone;
+                lesson.StuudentId = cancelLesson.StuudentId;
+                lesson.EStatusId = cancelLesson.EStatusId;
+                lesson.ReviewId = cancelLesson.ReviewId;
+
+                this.SaveChanges();
+                return lesson;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
+        }
+
+        public List<Lesson> GetLessons()
+        {
+            return this.Lessons.Include(l => l.Stuudent).ToList();
+        }
     }
 }

@@ -22,6 +22,7 @@ namespace LicenseServerBL.Models
         public int InstructorId { get; set; }
         public int? ReviewId { get; set; }
         public int EStatusId { get; set; }
+        public string Ltime { get; set; }
 
         public virtual Estatus EStatus { get; set; }
         public virtual Instructor Instructor { get; set; }

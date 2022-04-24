@@ -171,7 +171,8 @@ CREATE TABLE Lesson(
 	ReviewID INT NULL,
 	CONSTRAINT FK_LessonReview FOREIGN KEY(ReviewID) REFERENCES Review(ReviewID),
     eStatusId int NOT NULL,
-    CONSTRAINT FK_LessonEStatus FOREIGN KEY(eStatusId) REFERENCES EStatus(StatusID)
+    CONSTRAINT FK_LessonEStatus FOREIGN KEY(eStatusId) REFERENCES EStatus(StatusID),
+    LTime NVARCHAR(255) NOT NULL
 );
 
 CREATE TABLE EnrollmentRequests(
@@ -512,21 +513,21 @@ VALUES (N'שירי יפה', N's@y.com', N'123456', N'0534261684',1, CAST(N'2004-
 INSERT INTO EnrollmentRequests([InstructorID],[SchoolID],[StatusID])
 VALUES (2,1,1);
 
-Insert INTO Student([SName],[Email], [Pass],[PhoneNumber], [GenderID], [Birthday], [CityID], [SAddress], [GearboxID], [LicenseTypeID], [TeacherGender], [HighestPrice], [LessonsCount], [RegistrationDate], [LessonLengthID],[eStatusId])
-VALUES (N'שירה יוסוב', N's@s.com', N'shira', N'0522394165',1, CAST(N'2004-04-04' AS Date), 20, N'האירוס 2', 1, 1, 1, 200, 0, CAST(N'2022-04-16 8:23:00.000' AS DateTime), 3, 1);
+Insert INTO Student([SName],[Email], [Pass],[PhoneNumber], [GenderID], [Birthday], [CityID], [SAddress], [GearboxID], [LicenseTypeID], [TeacherGender], [HighestPrice], [LessonsCount], [RegistrationDate], [LessonLengthID],[eStatusId],[InstructorID])
+VALUES (N'שירה יוסוב', N's@s.com', N'shira', N'0522394165',1, CAST(N'2004-04-04' AS Date), 20, N'האירוס 2', 1, 1, 1, 200, 0, CAST(N'2022-04-16 8:23:00.000' AS DateTime), 3, 2, 1);
 
 INSERT INTO EnrollmentRequests([InstructorID],[StudentID],[StatusID])
 VALUES (1,2,1);
 
 
-Insert INTO Lesson([HasDone],[InstructorID],[IsPaid],[LDate],[LDay],[StuudentID],[IsAvailable],[eStatusId])
-VALUES (0, 1, 1, CAST(N'2022-04-20' AS Date), N'שישי', 1, 0 ,3);
+Insert INTO Lesson([HasDone],[InstructorID],[IsPaid],[LDate],[LDay],[StuudentID],[IsAvailable],[eStatusId],[LTime])
+VALUES (0, 1, 0, CAST(N'2022-04-25' AS Date), N'שני', 1, 0 ,1, N'14:00');
 
 UPDATE Instructor
 SET eStatusId = 1
 WHERE InstructorID = 2;
 
-select * from Lesson;
+select * from Instructor;
 
 UPDATE Lesson
 SET HasDone = 1

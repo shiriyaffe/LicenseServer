@@ -480,6 +480,21 @@ namespace LicenseServer.Controllers
             return lessons;
         }
 
+        [Route("GetInstructorLessons")]
+        [HttpGet]
+        public ObservableCollection<Lesson> GetInstructorLessons([FromQuery] int instructorId)
+        {
+            ObservableCollection<Lesson> lessons = new ObservableCollection<Lesson>();
+            List<Lesson> list = context.GetLessons();
+            foreach (Lesson l in list)
+            {
+                if (l.InstructorId == instructorId)
+                    lessons.Add(l);
+            }
+
+            return lessons;
+        }
+
         [Route("GetInstructorReviews")]
         [HttpGet]
         public ObservableCollection<Review> GetReviews([FromQuery] int instructorID)
@@ -763,13 +778,6 @@ namespace LicenseServer.Controllers
 
                 Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
                 return updatedLesson;
-
-                ////Now check if an image exist for the contact (photo). If not, set the default image!
-                //var sourcePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", DEFAULT_PHOTO);
-                //var targetPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", $"{user.Id}.jpg");
-                //System.IO.File.Copy(sourcePath, targetPath);
-
-                //return the contact with its new ID if that was a new contact
             }
             else
             {
@@ -788,6 +796,79 @@ namespace LicenseServer.Controllers
                     return i;
             }
             return null;
+        }
+
+        [Route("CancelLesson")]
+        [HttpPost]
+        public Lesson CancelLesson([FromBody] Lesson lesson)
+        {
+            //If user is null the request is bad
+            if (lesson == null)
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
+                return null;
+            }
+
+            Lesson current = context.Lessons.Where(l => l.LessonId == lesson.LessonId).FirstOrDefault();
+            //Check if user logged in and its ID is the same as the contact user ID
+            if (current != null)
+            {
+                Lesson cancelled = context.CancelLesson(current, lesson);
+
+                if (cancelled == null)
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                    return null;
+                }
+
+                Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                return cancelled;
+
+                ////Now check if an image exist for the contact (photo). If not, set the default image!
+                //var sourcePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", DEFAULT_PHOTO);
+                //var targetPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", $"{user.Id}.jpg");
+                //System.IO.File.Copy(sourcePath, targetPath);
+
+                //return the contact with its new ID if that was a new contact
+            }
+            else
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                return null;
+            }
+        }
+
+        [Route("GetNewStudents")]
+        [HttpGet]
+        public List<Student> GetNewStudents([FromQuery] int num)
+        {
+            List<Student> students = new List<Student>();
+            List<Student> newStudents = new List<Student>();
+
+            students = context.GetAllStudents().ToList();
+
+            foreach (Student s in students)
+            {
+                if (num == 1)
+                {
+                    if (s.RegistrationDate.Month == DateTime.Today.Month)
+                        newStudents.Add(s);
+                }
+                else if(num == 2)
+                {
+                    if ((DateTime.Today.AddDays(-1 * s.RegistrationDate.Day)).Day <= 7)
+                        newStudents.Add(s);
+                }
+                else if(num == 3)
+                {
+                    DateTime today = DateTime.Today;
+                    DateTime student = s.RegistrationDate;
+                    if (today.Day == student.Day && today.Month == student.Month && today.Year == student.Year)
+                        newStudents.Add(s);
+                }
+            }
+
+            return newStudents;
         }
     }
 }
