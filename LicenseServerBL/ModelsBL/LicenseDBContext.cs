@@ -13,6 +13,7 @@ namespace LicenseServerBL.Models
     public partial class LicenseDBContext : DbContext
     {
         const int APPROVED = 2;
+        const int WAITING = 1;
 
         public Object Login(string email, string pass)
         {
@@ -377,7 +378,7 @@ namespace LicenseServerBL.Models
             }
         }
 
-        public Lesson UpdateLesson(Lesson lesson, Lesson updatedLesson)
+        public Lesson UpdateLessonSum(Lesson lesson, Lesson updatedLesson)
         {
             try
             {
@@ -417,6 +418,63 @@ namespace LicenseServerBL.Models
         public List<Lesson> GetLessons()
         {
             return this.Lessons.Include(l => l.Stuudent).ToList();
+        }
+
+        public bool CheckIfAvailable(Lesson l)
+        {
+            bool available = true;
+            int count = 0;
+
+            foreach(Lesson lesson in this.Lessons)
+            {
+                if(lesson.InstructorId == l.InstructorId)
+                {
+                    if(lesson.Ldate.CompareTo(l.Ldate) == 0 && lesson.Ltime.Equals(l.Ltime))
+                    {
+                        if (lesson.EStatusId != APPROVED && lesson.EStatusId != WAITING && count == 0)
+                            available = true;
+                        else
+                        {
+                            available = false;
+                            count++;
+                        }
+                    }
+
+                }
+            }
+
+            return available;
+        }
+
+        public bool AddNewLesson(Lesson lesson)
+        {
+            try
+            {
+                this.Lessons.Add(lesson);
+                this.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public Lesson ApproveLesson(Lesson lesson, Lesson updatedLesson)
+        {
+            try
+            {
+                lesson.EStatusId = updatedLesson.EStatusId;
+
+                this.SaveChanges();
+                return lesson;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
         }
     }
 }

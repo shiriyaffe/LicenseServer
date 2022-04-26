@@ -340,7 +340,6 @@ namespace LicenseServer.Controllers
                 bool added = this.context.AddDSchool(dSchool);
                 if (added)
                 {
-                    HttpContext.Session.SetObject("theUser", dSchool);
                     Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
                     //Important! Due to the Lazy Loading, the user will be returned with all of its contects!!
                     return dSchool;
@@ -365,7 +364,6 @@ namespace LicenseServer.Controllers
                 bool added = this.context.AddEnrollment(enrollment);
                 if (added)
                 {
-                    HttpContext.Session.SetObject("theUser", enrollment);
                     Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
                     //Important! Due to the Lazy Loading, the user will be returned with all of its contects!!
                     return enrollment;
@@ -389,7 +387,6 @@ namespace LicenseServer.Controllers
                 bool added = this.context.AddSummary(summary);
                 if (added)
                 {
-                    HttpContext.Session.SetObject("theUser", summary);
                     Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
                     //Important! Due to the Lazy Loading, the user will be returned with all of its contects!!
                     return summary;
@@ -413,7 +410,6 @@ namespace LicenseServer.Controllers
                 bool added = this.context.AddInstructorReview(review);
                 if (added)
                 {
-                    HttpContext.Session.SetObject("theUser", review);
                     Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
                     //Important! Due to the Lazy Loading, the user will be returned with all of its contects!!
                     return review;
@@ -437,7 +433,6 @@ namespace LicenseServer.Controllers
                 bool added = this.context.AddReview(review);
                 if (added)
                 {
-                    HttpContext.Session.SetObject("theUser", review);
                     Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
                     //Important! Due to the Lazy Loading, the user will be returned with all of its contects!!
                     return review;
@@ -518,7 +513,9 @@ namespace LicenseServer.Controllers
         public ObservableCollection<Student> GetStudentsByInstructor([FromQuery] int instructorId)
         {
             ObservableCollection<Student> students = new ObservableCollection<Student>();
-            foreach (Student s in context.Students)
+            ObservableCollection<Student> students1 = this.context.GetAllStudents();
+
+            foreach (Student s in students1)
             {
                 if (s.InstructorId == instructorId)
                     students.Add(s);
@@ -768,7 +765,7 @@ namespace LicenseServer.Controllers
             Lesson current = context.Lessons.Where(l => l.LessonId == lesson.LessonId).FirstOrDefault();
             if(current != null)
             {
-                Lesson updatedLesson = context.UpdateLesson(current, lesson);
+                Lesson updatedLesson = context.UpdateLessonSum(current, lesson);
 
                 if (updatedLesson == null)
                 {
@@ -869,6 +866,96 @@ namespace LicenseServer.Controllers
             }
 
             return newStudents;
+        }
+
+        [Route("CheckIfAvailable")]
+        [HttpPost]
+        public bool CheckIfAvailable([FromBody] Lesson l)
+        {
+            try
+            {
+                if (l != null)
+                {
+                    bool ok = this.context.CheckIfAvailable(l);
+
+                    if (ok)
+                    {
+                        Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                        return true;
+                    }
+                    else
+                    {
+                        Response.StatusCode = (int)System.Net.HttpStatusCode.NotModified;
+                        return false;
+                    }
+                }
+
+                else
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        [Route("AddNewLesson")]
+        [HttpPost]
+        public Lesson AddNewLesson([FromBody] Lesson lesson)
+        {
+            if (lesson != null)
+            {
+                bool added = this.context.AddNewLesson(lesson);
+                if (added)
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                    //Important! Due to the Lazy Loading, the user will be returned with all of its contects!!
+                    return lesson;
+                }
+                else
+                    return null;
+            }
+            else
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                return null;
+            }
+        }
+
+        [Route("ApproveLesson")]
+        [HttpPost]
+        public Lesson ApproveLesson([FromBody] Lesson lesson)
+        {
+            //If user is null the request is bad
+            if (lesson == null)
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
+                return null;
+            }
+
+            Lesson current = context.Lessons.Where(l => l.LessonId == lesson.LessonId).FirstOrDefault();
+            if (current != null)
+            {
+                Lesson updatedLesson = context.ApproveLesson(current, lesson);
+
+                if (updatedLesson == null)
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                    return null;
+                }
+
+                Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                return updatedLesson;
+            }
+            else
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                return null;
+            }
         }
     }
 }
