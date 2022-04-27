@@ -24,6 +24,7 @@ namespace LicenseServer.Controllers
         }
 
         private const int WAITING_STATUS = 1;
+        private const int APPROVED_STATUS = 2;
 
         [Route("SayHello")]
         [HttpGet]
@@ -937,9 +938,21 @@ namespace LicenseServer.Controllers
                 return null;
             }
 
-            Lesson current = context.Lessons.Where(l => l.LessonId == lesson.LessonId).FirstOrDefault();
+            Lesson current = context.Lessons.Where(l => l.LessonId == lesson.LessonId && l.EStatusId == WAITING_STATUS).FirstOrDefault();
             if (current != null)
             {
+                foreach (Lesson lesson1 in context.Lessons)
+                {
+                    if (lesson1.InstructorId == current.InstructorId)
+                    {
+                        if (lesson1.Ltime.Equals(current.Ltime) && lesson1.Ldate.CompareTo(current.Ldate) == 0)
+                        {
+                            if (lesson1.EStatusId == APPROVED_STATUS)
+                                return new Lesson();
+                        }
+                    }
+                }
+
                 Lesson updatedLesson = context.ApproveLesson(current, lesson);
 
                 if (updatedLesson == null)
@@ -955,6 +968,41 @@ namespace LicenseServer.Controllers
             {
                 Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
                 return null;
+            }
+        }
+
+        [Route("CheckIfMailExists")]
+        [HttpGet]
+        public bool CheckIfMailExists([FromQuery] string mail)
+        {
+            try
+            {
+                if (mail != "")
+                {
+                    bool exist = this.context.CheckIfMailExists(mail);
+
+                    if (exist)
+                    {
+                        Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                        return true;
+                    }
+                    else
+                    {
+                        Response.StatusCode = (int)System.Net.HttpStatusCode.NotModified;
+                        return false;
+                    }
+                }
+
+                else
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
             }
         }
     }

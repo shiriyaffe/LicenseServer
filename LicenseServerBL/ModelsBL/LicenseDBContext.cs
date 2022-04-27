@@ -70,6 +70,12 @@ namespace LicenseServerBL.Models
         {
             try
             {
+                foreach(Student s in this.Students)
+                {
+                    if (s.Email.Equals(student.Email))
+                        return false;
+                }
+
                 this.Students.Add(student);
                 this.SaveChanges();
                 return true;
@@ -85,6 +91,12 @@ namespace LicenseServerBL.Models
         {
             try
             {
+                foreach (Instructor i in this.Instructors)
+                {
+                    if (i.Email.Equals(instructor.Email))
+                        return false;
+                }
+
                 this.Instructors.Add(instructor);
                 this.SaveChanges();
                 return true;
@@ -100,6 +112,12 @@ namespace LicenseServerBL.Models
         {
             try
             {
+                foreach (SchoolManager s in this.SchoolManagers)
+                {
+                    if (s.Email.Equals(sManager.Email))
+                        return false;
+                }
+
                 this.SchoolManagers.Add(sManager);
                 this.SaveChanges();
                 return true;
@@ -475,6 +493,27 @@ namespace LicenseServerBL.Models
                 Console.WriteLine(e.Message);
                 return null;
             }
+        }
+
+        public bool CheckIfMailExists(string mail)
+        {
+            foreach(Student s in this.Students)
+            {
+                if (s.Email.Equals(mail))
+                    return true;
+            }
+            foreach (Instructor i in this.Instructors)
+            {
+                if (i.Email.Equals(mail))
+                    return true;
+            }
+            foreach (SchoolManager sm in this.SchoolManagers)
+            {
+                if (sm.Email.Equals(mail))
+                    return true;
+            }
+
+            return false;
         }
     }
 }
