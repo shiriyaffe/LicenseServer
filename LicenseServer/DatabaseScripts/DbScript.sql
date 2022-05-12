@@ -521,13 +521,13 @@ VALUES (1,2,1);
 
 
 Insert INTO Lesson([HasDone],[InstructorID],[IsPaid],[LDate],[LDay],[StuudentID],[IsAvailable],[eStatusId],[LTime])
-VALUES (0, 1, 0, CAST(N'2022-04-25' AS Date), N'שני', 1, 0 ,2, N'14:00');
+VALUES (1, 1, 0, CAST(N'2022-04-25' AS Date), N'שני', 1, 0 ,2, N'15:00');
 
 UPDATE Instructor
 SET eStatusId = 1
 WHERE InstructorID = 2;
 
-select * from Instructor;
+select * from Student;
 
 UPDATE Lesson
 SET HasDone = 1

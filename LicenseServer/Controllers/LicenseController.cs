@@ -1005,6 +1005,21 @@ namespace LicenseServer.Controllers
                 return false;
             }
         }
+
+        [Route("GetLessonSum")]
+        [HttpGet]
+        public string GetLessonSum([FromQuery] int reviewId)
+        {
+            foreach(Review r in context.Reviews)
+            {
+                if(r.ReviewId == reviewId)
+                {
+                    return r.Content;
+                }
+            }
+
+            return null;
+        }
     }
 }
 

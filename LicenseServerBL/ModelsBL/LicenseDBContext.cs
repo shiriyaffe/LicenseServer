@@ -360,6 +360,9 @@ namespace LicenseServerBL.Models
                             this.Students.Update(student);
                         }
                     }
+                    else
+                    { 
+                    }
                     this.SaveChanges();
 
                     return true;
