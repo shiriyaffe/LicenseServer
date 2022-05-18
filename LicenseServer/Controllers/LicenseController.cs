@@ -10,6 +10,9 @@ using System.Windows.Input;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using System.IO;
+using System.Net;
+using System.Net.Mail;
+using LicenseServer.Helper;
 
 namespace LicenseServer.Controllers
 {
@@ -25,6 +28,7 @@ namespace LicenseServer.Controllers
 
         private const int WAITING_STATUS = 1;
         private const int APPROVED_STATUS = 2;
+        private const int DENIED_STATUS = 3;
 
         [Route("SayHello")]
         [HttpGet]
@@ -366,6 +370,43 @@ namespace LicenseServer.Controllers
                 if (added)
                 {
                     Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+
+                    if(enrollment.LessonId == null)
+                    {
+                        if(enrollment.StudentId == null)
+                        {
+                            string smEmail = "";
+                            string smName = "";
+
+                            foreach(SchoolManager sm in context.SchoolManagers)
+                            {
+                                if (sm.SchoolId == enrollment.SchoolId)
+                                {
+                                    smEmail = sm.Email;
+                                    smName = sm.Smname;
+                                }
+                            }
+                            
+                            EmailSender.SendEmail("בקשת רישום חדשה", "מורה חדש מבקש להירשם לבית הספר לנהיגה שלך! מהר להיכנס לאפליקציה על מנת לאשר או לדחות את הבקשה", $"{smEmail}", $"{smName}", "easy2drive2022@gmail.com", "easyDrive", "easyDrive2022", "smtp.gmail.com");
+                        }
+                        else if (enrollment.SchoolId == null)
+                        {
+                            string iEmail = "";
+                            string iName = "";
+
+                            foreach (Instructor i in context.Instructors)
+                            {
+                                if (i.InstructorId == enrollment.InstructorId)
+                                {
+                                    iEmail = i.Email;
+                                    iName = i.Iname;
+                                }
+                            }
+
+                            EmailSender.SendEmail("בקשת רישום חדשה", "תלמיד חדש מבקש להירשם אצלך! מהר להיכנס לאפליקציה על מנת לאשר או לדחות את הבקשה", $"{iEmail}", $"{iName}", "easy2drive2022@gmail.com", "easyDrive", "easyDrive2022", "smtp.gmail.com");
+                        }
+                    }
+
                     //Important! Due to the Lazy Loading, the user will be returned with all of its contects!!
                     return enrollment;
                 }
@@ -693,8 +734,11 @@ namespace LicenseServer.Controllers
                     if (ok)
                     {
                         Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+
+                        EmailSender.SendEmail("סטטוס ההרשמה שלך עודכן!", "סטטוס ההרשמה שלך לבית הספר לנהיגה שבחרת עודכן באפליקציה! מהר להיכנס ולהתעדכן במצבך", $"{i.Email}", $"{i.Iname}", "easy2drive2022@gmail.com", "easyDrive", "easyDrive2022", "smtp.gmail.com");
                         return true;
                     }
+
                     else
                     {
                         Response.StatusCode = (int)System.Net.HttpStatusCode.NotModified;
@@ -730,6 +774,16 @@ namespace LicenseServer.Controllers
                     if (ok)
                     {
                         Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+
+                        EnrollmentRequest em = context.EnrollmentRequests.Where(e => e.StudentId != null && e.StudentId == s.StudentId).FirstOrDefault();
+                        if (em != null)
+                        {
+                            if(em.StatusId == APPROVED_STATUS)
+                                EmailSender.SendEmail("סטטוס ההרשמה שלך עודכן!", "בקשתך לרישום למורה אושרה בהצלחה. כנס לאפליקציה וקבע שיעור ראשון\nבהצלחה :)", $"{s.Email}", $"{s.Sname}", "easy2drive2022@gmail.com", "easyDrive", "easyDrive2022", "smtp.gmail.com");
+                            if(em.StatusId == DENIED_STATUS)
+                                EmailSender.SendEmail("סטטוס ההרשמה שלך עודכן!", "לצערנו בקשתך לרישום למורה נדחתה. כנס לאפליקציה ושלח בקשה נוספת..", $"{s.Email}", $"{s.Sname}", "easy2drive2022@gmail.com", "easyDrive", "easyDrive2022", "smtp.gmail.com");
+                        }
+
                         return true;
                     }
                     else

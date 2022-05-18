@@ -15,7 +15,7 @@ namespace LicenseServer.Helper
         //3. if you send the email via GMAIL:
         //   You should set the email sender account to allow applications with low security access the account
         //   It can be done by loggin into the google account, under security, set "Access to applications with low security level"
-        static void SendEmail(string subject, string body, string to, string toName, string from, string fromName, string pswd, string smtpUrl)
+        public static void SendEmail(string subject, string body, string to, string toName, string from, string fromName, string pswd, string smtpUrl)
         {
             var fromAddress = new MailAddress(from, fromName);
             var toAddress = new MailAddress(to, toName);

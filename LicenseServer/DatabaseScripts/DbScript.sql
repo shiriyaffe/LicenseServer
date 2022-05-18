@@ -527,9 +527,10 @@ UPDATE Instructor
 SET eStatusId = 1
 WHERE InstructorID = 2;
 
-select * from Student;
+select * from EnrollmentRequests;
 
 UPDATE Lesson
 SET HasDone = 1
 WHERE LessonID = 3;
+
 
