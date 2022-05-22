@@ -24,6 +24,7 @@ namespace LicenseServerBL.Models
             Student s = this.Students.
                           Include(er => er.EnrollmentRequests).
                           Include(l => l.Lessons).
+                          Include(i => i.Instructor).
                           Where(u => u.Email == email && u.Pass == pass).FirstOrDefault();
 
             if (s == null)

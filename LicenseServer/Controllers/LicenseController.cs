@@ -387,7 +387,7 @@ namespace LicenseServer.Controllers
                                 }
                             }
                             
-                            EmailSender.SendEmail("בקשת רישום חדשה", "מורה חדש מבקש להירשם לבית הספר לנהיגה שלך! מהר להיכנס לאפליקציה על מנת לאשר או לדחות את הבקשה", $"{smEmail}", $"{smName}", "easy2drive2022@gmail.com", "easyDrive", "easyDrive2022", "smtp.gmail.com");
+                            EmailSender.SendEmail("בקשת רישום חדשה", "מורה חדש מבקש להירשם לבית הספר לנהיגה שלך! מהר להיכנס לאפליקציה על מנת לאשר או לדחות את הבקשה", $"{smEmail}", $"{smName}", "<easy2drive2022@gmail.com>", "easyDrive", "easyDrive2022", "smtp.gmail.com");
                         }
                         else if (enrollment.SchoolId == null)
                         {
@@ -403,7 +403,7 @@ namespace LicenseServer.Controllers
                                 }
                             }
 
-                            EmailSender.SendEmail("בקשת רישום חדשה", "תלמיד חדש מבקש להירשם אצלך! מהר להיכנס לאפליקציה על מנת לאשר או לדחות את הבקשה", $"{iEmail}", $"{iName}", "easy2drive2022@gmail.com", "easyDrive", "easyDrive2022", "smtp.gmail.com");
+                            EmailSender.SendEmail("בקשת רישום חדשה", "תלמיד חדש מבקש להירשם אצלך! מהר להיכנס לאפליקציה על מנת לאשר או לדחות את הבקשה", $"{iEmail}", $"{iName}", "<easy2drive2022@gmail.com>", "easyDrive", "easyDrive2022", "smtp.gmail.com");
                         }
                     }
 
@@ -555,7 +555,9 @@ namespace LicenseServer.Controllers
         public ObservableCollection<Student> GetStudentsByInstructor([FromQuery] int instructorId)
         {
             ObservableCollection<Student> students = new ObservableCollection<Student>();
-            ObservableCollection<Student> students1 = this.context.GetAllStudents();
+            ObservableCollection<Student> students1 = new ObservableCollection<Student>();
+
+            students1 = this.context.GetAllStudents();
 
             foreach (Student s in students1)
             {
@@ -735,7 +737,7 @@ namespace LicenseServer.Controllers
                     {
                         Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
 
-                        EmailSender.SendEmail("סטטוס ההרשמה שלך עודכן!", "סטטוס ההרשמה שלך לבית הספר לנהיגה שבחרת עודכן באפליקציה! מהר להיכנס ולהתעדכן במצבך", $"{i.Email}", $"{i.Iname}", "easy2drive2022@gmail.com", "easyDrive", "easyDrive2022", "smtp.gmail.com");
+                        EmailSender.SendEmail("סטטוס ההרשמה שלך עודכן!", "סטטוס ההרשמה שלך לבית הספר לנהיגה שבחרת עודכן באפליקציה! מהר להיכנס ולהתעדכן במצבך", $"{i.Email}", $"{i.Iname}", "<easy2drive2022@gmail.com>", "easyDrive", "easyDrive2022", "smtp.gmail.com");
                         return true;
                     }
 
@@ -779,9 +781,9 @@ namespace LicenseServer.Controllers
                         if (em != null)
                         {
                             if(em.StatusId == APPROVED_STATUS)
-                                EmailSender.SendEmail("סטטוס ההרשמה שלך עודכן!", "בקשתך לרישום למורה אושרה בהצלחה. כנס לאפליקציה וקבע שיעור ראשון\nבהצלחה :)", $"{s.Email}", $"{s.Sname}", "easy2drive2022@gmail.com", "easyDrive", "easyDrive2022", "smtp.gmail.com");
+                                EmailSender.SendEmail("סטטוס ההרשמה שלך עודכן!", "בקשתך לרישום למורה אושרה בהצלחה. כנס לאפליקציה וקבע שיעור ראשון\nבהצלחה :)", $"{s.Email}", $"{s.Sname}", "<easy2drive2022@gmail.com>", "easyDrive", "easyDrive2022", "smtp.gmail.com");
                             if(em.StatusId == DENIED_STATUS)
-                                EmailSender.SendEmail("סטטוס ההרשמה שלך עודכן!", "לצערנו בקשתך לרישום למורה נדחתה. כנס לאפליקציה ושלח בקשה נוספת..", $"{s.Email}", $"{s.Sname}", "easy2drive2022@gmail.com", "easyDrive", "easyDrive2022", "smtp.gmail.com");
+                                EmailSender.SendEmail("סטטוס ההרשמה שלך עודכן!", "לצערנו בקשתך לרישום למורה נדחתה. כנס לאפליקציה ושלח בקשה נוספת..", $"{s.Email}", $"{s.Sname}", "<easy2drive2022@gmail.com>", "easyDrive", "easyDrive2022", "smtp.gmail.com");
                         }
 
                         return true;
@@ -862,6 +864,16 @@ namespace LicenseServer.Controllers
             }
 
             Lesson current = context.Lessons.Where(l => l.LessonId == lesson.LessonId).FirstOrDefault();
+
+            int formerStatus = current.EStatusId;
+
+            Student student = new Student();
+            foreach (Student s in context.Students)
+            {
+                if (s.StudentId == current.StuudentId)
+                    student = s;
+            }
+
             //Check if user logged in and its ID is the same as the contact user ID
             if (current != null)
             {
@@ -874,6 +886,13 @@ namespace LicenseServer.Controllers
                 }
 
                 Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+
+                if(formerStatus == APPROVED_STATUS)
+                    EmailSender.SendEmail("עדכון שיעור", $"השיעור שלך בתאריך {cancelled.Ldate} בוטל על ידי המורה. מהר להיכנס לאפליקציה ולקבוע שיעור חדש", $"{student.Email}", $"{student.Sname}", "<easy2drive2022@gmail.com>", "easyDrive", "easyDrive2022", "smtp.gmail.com");
+                else if(formerStatus == WAITING_STATUS)
+                    EmailSender.SendEmail("עדכון שיעור", $"בקשתך לקבוע שיעור בתאריך {cancelled.Ldate} ובשעה {cancelled.Ltime} נדחתה על ידי המורה. כנס לאפליקציה ושלח בקשה לקביעת שיעור נוסף", $"{student.Email}", $"{student.Sname}", "<easy2drive2022@gmail.com>", "easyDrive", "easyDrive2022", "smtp.gmail.com");
+
+
                 return cancelled;
 
                 ////Now check if an image exist for the contact (photo). If not, set the default image!
@@ -908,8 +927,11 @@ namespace LicenseServer.Controllers
                 }
                 else if(num == 2)
                 {
-                    if ((DateTime.Today.AddDays(-1 * s.RegistrationDate.Day)).Day <= 7)
-                        newStudents.Add(s);
+                    if (s.RegistrationDate.Month == DateTime.Today.Month)
+                    {
+                        if ((DateTime.Today.AddDays(-1 * s.RegistrationDate.Day)).Day <= 7)
+                            newStudents.Add(s);
+                    }
                 }
                 else if(num == 3)
                 {
@@ -1015,7 +1037,17 @@ namespace LicenseServer.Controllers
                     return null;
                 }
 
+                Student student = new Student();
+                foreach (Student s in context.Students)
+                {
+                    if (s.StudentId == current.StuudentId)
+                        student = s;
+                }
+
                 Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+
+                EmailSender.SendEmail("עדכון שיעור", $"בקשתך לשיעור בתאריך {updatedLesson.Ldate} ובשעה {updatedLesson.Ltime} אושרה בהצלחה!", $"{student.Email}", $"{student.Sname}", "<easy2drive2022@gmail.com>", "easyDrive", "easyDrive2022", "smtp.gmail.com");
+
                 return updatedLesson;
             }
             else
