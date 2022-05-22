@@ -203,7 +203,9 @@ CREATE TABLE StudentSummarys(
     ReviewID INT NOT NULL,
 	CONSTRAINT FK_InstructorStudentSummarys FOREIGN KEY(ReviewID) REFERENCES Review(ReviewID),
 	StudentID INT NOT NULL,
-	CONSTRAINT FK_StudentStudentSummarys FOREIGN KEY(StudentID) REFERENCES Student(StudentID)
+	CONSTRAINT FK_StudentStudentSummarys FOREIGN KEY(StudentID) REFERENCES Student(StudentID),
+    LessonID int NOT NULL,
+    CONSTRAINT FK_LessonStudentSummarys FOREIGN KEY(LessonID) REFERENCES Lesson(LessonID)
 );
 
 ALTER TABLE StudentSummarys
@@ -521,16 +523,14 @@ VALUES (1,2,1);
 
 
 Insert INTO Lesson([HasDone],[InstructorID],[IsPaid],[LDate],[LDay],[StuudentID],[IsAvailable],[eStatusId],[LTime])
-VALUES (0, 1, 0, CAST(N'2022-05-27' AS Date), N'שני', 1, 0 ,2, N'15:00');
+VALUES (1, 1, 1, CAST(N'2022-05-20' AS Date), N'שישי', 1, 0 ,2, N'10:00');
 
 UPDATE Student
 SET Email = '6363shiri@gmail.com'
 WHERE StudentID = 1;
 
-select * from Student;
+select * from Lesson;
 
 UPDATE Lesson
 SET HasDone = 0
 WHERE LessonID = 1;
-
-

@@ -9,7 +9,9 @@ namespace LicenseServerBL.Models
     {
         public int ReviewId { get; set; }
         public int StudentId { get; set; }
+        public int LessonId { get; set; }
 
+        public virtual Lesson Lesson { get; set; }
         public virtual Review Review { get; set; }
         public virtual Student Student { get; set; }
     }

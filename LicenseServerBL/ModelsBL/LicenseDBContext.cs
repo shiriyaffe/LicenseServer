@@ -519,5 +519,15 @@ namespace LicenseServerBL.Models
 
             return false;
         }
+
+        public bool CheckIfSumExists(int lessonId)
+        {
+            foreach(StudentSummary ss in this.StudentSummarys)
+            {
+                if (ss.LessonId == lessonId)
+                    return true;
+            }
+            return false;
+        }
     }
 }

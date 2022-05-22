@@ -1106,6 +1106,41 @@ namespace LicenseServer.Controllers
 
             return null;
         }
+
+        [Route("CheckIfSumExists")]
+        [HttpGet]
+        public bool CheckIfSumExists([FromQuery] int lessonId)
+        {
+            try
+            {
+                if (lessonId > 0)
+                {
+                    bool exist = this.context.CheckIfSumExists(lessonId);
+
+                    if (exist)
+                    {
+                        Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                        return true;
+                    }
+                    else
+                    {
+                        Response.StatusCode = (int)System.Net.HttpStatusCode.NotModified;
+                        return false;
+                    }
+                }
+
+                else
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
     }
 }
 
