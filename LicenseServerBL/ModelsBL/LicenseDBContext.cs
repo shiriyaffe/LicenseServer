@@ -529,5 +529,25 @@ namespace LicenseServerBL.Models
             }
             return false;
         }
+
+        public bool ChangeRating(Instructor i)
+        {
+            try
+            {
+                Instructor instructor = new Instructor();
+                instructor = this.Instructors.Where(t => t.InstructorId == i.InstructorId).FirstOrDefault();
+
+                instructor.RateId = i.RateId;
+                this.Instructors.Update(instructor);
+
+                this.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
     }
 }

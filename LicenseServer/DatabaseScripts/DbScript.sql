@@ -516,20 +516,20 @@ INSERT INTO EnrollmentRequests([InstructorID],[SchoolID],[StatusID])
 VALUES (2,1,1);
 
 Insert INTO Student([SName],[Email], [Pass],[PhoneNumber], [GenderID], [Birthday], [CityID], [SAddress], [GearboxID], [LicenseTypeID], [TeacherGender], [HighestPrice], [LessonsCount], [RegistrationDate], [LessonLengthID],[eStatusId],[InstructorID])
-VALUES (N'שירה יוסוב', N's@s.com', N'shira', N'0522394165',1, CAST(N'2004-04-04' AS Date), 20, N'האירוס 2', 1, 1, 1, 200, 0, CAST(N'2022-04-16 8:23:00.000' AS DateTime), 3, 2, 1);
+VALUES (N'שירה יוסוב', N's@u.com', N'shira', N'0522394165',1, CAST(N'2004-04-04' AS Date), 20, N'האירוס 2', 1, 1, 1, 200, 0, CAST(N'2022-04-16 8:23:00.000' AS DateTime), 3, 2, 1);
 
 INSERT INTO EnrollmentRequests([InstructorID],[StudentID],[StatusID])
 VALUES (1,2,1);
 
 
 Insert INTO Lesson([HasDone],[InstructorID],[IsPaid],[LDate],[LDay],[StuudentID],[IsAvailable],[eStatusId],[LTime])
-VALUES (1, 1, 1, CAST(N'2022-05-20' AS Date), N'שישי', 1, 0 ,2, N'10:00');
+VALUES (1, 1, 0, CAST(N'2022-05-27' AS Date), N'שישי', 1, 0 ,1, N'10:00');
 
 UPDATE Student
 SET Email = '6363shiri@gmail.com'
 WHERE StudentID = 1;
 
-select * from Lesson;
+select * from Student;
 
 UPDATE Lesson
 SET HasDone = 0

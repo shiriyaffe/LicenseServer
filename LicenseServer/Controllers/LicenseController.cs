@@ -1141,6 +1141,44 @@ namespace LicenseServer.Controllers
                 return false;
             }
         }
+
+        [Route("ChangeRating")]
+        [HttpPost]
+        public bool ChangeRating(Instructor i)
+        {
+            try
+            {
+                User user = HttpContext.Session.GetObject<User>("theUser");
+
+                if (user != null)
+                {
+                    bool ok = this.context.ChangeRating(i);
+
+                    if (ok)
+                    {
+                        Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                        return true;
+                    }
+
+                    else
+                    {
+                        Response.StatusCode = (int)System.Net.HttpStatusCode.NotModified;
+                        return false;
+                    }
+                }
+
+                else
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
     }
 }
 
