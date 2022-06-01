@@ -515,8 +515,8 @@ VALUES (N'שירי יפה', N's@y.com', N'123456', N'0534261684',1, CAST(N'2004-
 INSERT INTO EnrollmentRequests([InstructorID],[SchoolID],[StatusID])
 VALUES (2,1,1);
 
-Insert INTO Student([SName],[Email], [Pass],[PhoneNumber], [GenderID], [Birthday], [CityID], [SAddress], [GearboxID], [LicenseTypeID], [TeacherGender], [HighestPrice], [LessonsCount], [RegistrationDate], [LessonLengthID],[eStatusId],[InstructorID])
-VALUES (N'שירה יוסוב', N's@u.com', N'shira', N'0522394165',1, CAST(N'2004-04-04' AS Date), 20, N'האירוס 2', 1, 1, 1, 200, 0, CAST(N'2022-04-16 8:23:00.000' AS DateTime), 3, 2, 1);
+Insert INTO Student([SName],[Email], [Pass],[PhoneNumber], [GenderID], [Birthday], [CityID], [SAddress], [GearboxID], [LicenseTypeID], [TeacherGender], [HighestPrice], [LessonsCount], [RegistrationDate], [LessonLengthID],[eStatusId])
+VALUES (N'שירה יוסוב', N's@u.com', N'123456', N'0522394165',1, CAST(N'2004-04-04' AS Date), 20, N'האירוס 2', 1, 1, 1, 200, 0, CAST(N'2022-05-30 8:23:00.000' AS DateTime), 3, 1);
 
 INSERT INTO EnrollmentRequests([InstructorID],[StudentID],[StatusID])
 VALUES (1,2,1);

@@ -236,17 +236,17 @@ namespace LicenseServer.Controllers
             }
         }
 
-        [Route("GetAreaName")]
-        [HttpGet]
-        public string GetAreaName([FromQuery] int areaId)
-        {
-            foreach (Area a in context.Areas)
-            {
-                if (a.AreaId == areaId)
-                    return a.AreaName;
-            }
-            return "";
-        }
+        //[Route("GetAreaName")]
+        //[HttpGet]
+        //public string GetAreaName([FromQuery] int areaId)
+        //{
+        //    foreach (Area a in context.Areas)
+        //    {
+        //        if (a.AreaId == areaId)
+        //            return a.AreaName;
+        //    }
+        //    return "";
+        //}
 
         [Route("GetCityById")]
         [HttpGet]
@@ -570,7 +570,7 @@ namespace LicenseServer.Controllers
 
         [Route("GetAllWaitingStudentsByInstructor")]
         [HttpGet]
-        public ObservableCollection<Student> GetAllWaitingStudentsByInstructor([FromQuery] int instructorId)
+        public ObservableCollection<Student> GetWaitingStudentsByInstructor([FromQuery] int instructorId)
         {
             ObservableCollection<Student> students = new ObservableCollection<Student>();
             List<EnrollmentRequest> enrollmentRequests = context.GetEnrollments();
