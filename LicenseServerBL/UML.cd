@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="LicenseServerBL.Models.Area">
+    <Position X="3.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAIAAEAAAAAAAAAACAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Models\Area.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Cities" />
+      <Property Name="DrivingSchools" />
+      <Property Name="Instructors" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="LicenseServerBL.Models.Instructor">
+    <Position X="8.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>RAIEggABASQBAACQAgIEQAAIITAoEAAAoAAYBQAAAAg=</HashCode>
+      <FileName>Models\Instructor.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Area" />
+      <Property Name="DrivingSchool" />
+      <Property Name="EStatus" />
+      <Property Name="Gearbox" />
+      <Property Name="Gender" />
+      <Property Name="LessonLength" />
+      <Property Name="LicenseType" />
+      <Property Name="Rate" />
+      <Property Name="SchoolManager" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="EnrollmentRequests" />
+      <Property Name="InstructorReviews" />
+      <Property Name="Lessons" />
+      <Property Name="Students" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="LicenseServerBL.Models.Student">
+    <Position X="8.75" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAEAgABACQAAACYAiIAQAAAATAKEAAAAAQQBAACAAQ=</HashCode>
+      <FileName>Models\Student.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="City" />
+      <Property Name="EStatus" />
+      <Property Name="Gearbox" />
+      <Property Name="Gender" />
+      <Property Name="Instructor" />
+      <Property Name="LessonLength" />
+      <Property Name="LicenseType" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="EnrollmentRequests" />
+      <Property Name="Lessons" />
+      <Property Name="StudentSummaries" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="LicenseServerBL.Models.SchoolManager">
+    <Position X="8" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQABAAAAAKQAgACQAAIAQAAAAQAIEAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Models\SchoolManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="EStatus" />
+      <Property Name="Gender" />
+      <Property Name="School" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Instructors" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="LicenseServerBL.Models.Lesson">
+    <Position X="3.75" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAEAAEAQAAIAAAgAIiAAAQAAEASEAIAABAA=</HashCode>
+      <FileName>Models\Lesson.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="EStatus" />
+      <Property Name="Instructor" />
+      <Property Name="Review" />
+      <Property Name="Stuudent" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="EnrollmentRequests" />
+      <Property Name="StudentSummaries" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="LicenseServerBL.Models.City">
+    <Position X="6" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAABIAAAAAAAAAAAAAAAAAAAAAAAIAAAAQAAAAA=</HashCode>
+      <FileName>Models\City.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Area" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Students" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="LicenseServerBL.Models.DrivingSchool">
+    <Position X="6.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAIAAAAAKAAgAAAAAIAAAAAEAAAAAAAIAAAAQAAAAA=</HashCode>
+      <FileName>Models\DrivingSchool.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Area" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="EnrollmentRequests" />
+      <Property Name="Instructors" />
+      <Property Name="SchoolManagers" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="LicenseServerBL.Models.Estatus">
+    <Position X="5.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIIAAAIAIAAAAAAAAIEAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Models\Estatus.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="EnrollmentRequests" />
+      <Property Name="Instructors" />
+      <Property Name="Lessons" />
+      <Property Name="SchoolManagers" />
+      <Property Name="Students" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="LicenseServerBL.Models.Gearbox">
+    <Position X="11.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAIAAAAAAAgAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Models\Gearbox.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Instructors" />
+      <Property Name="Students" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="LicenseServerBL.Models.Gender">
+    <Position X="11.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIIAAAAAIAAAAAgAAAAAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Gender.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Instructors" />
+      <Property Name="SchoolManagers" />
+      <Property Name="Students" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="LicenseServerBL.Models.InstructorReview">
+    <Position X="12" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAEASAAAAAAAA=</HashCode>
+      <FileName>Models\InstructorReview.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Instructor" />
+      <Property Name="Review" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="LicenseServerBL.Models.LessonLength">
+    <Position X="12" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAIAAAAAAAAAAAAAAAAAAAEAAAAAABAAAAAA=</HashCode>
+      <FileName>Models\LessonLength.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Instructors" />
+      <Property Name="Students" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="LicenseServerBL.Models.LicenseDBContext" Collapsed="true">
+    <Position X="12.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAIIkEUJAbAUACAEAAIAACBCMAmAwMgBBAIwIgIcMAE=</HashCode>
+      <FileName>Models\LicenseDBContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LicenseServerBL.Models.LicenseType">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAgAAIAgAAAAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\LicenseType.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Students" />
+      <Property Name="Instructors" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="LicenseServerBL.Models.Rate">
+    <Position X="10" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAIIAAAAAA=</HashCode>
+      <FileName>Models\Rate.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Instructors" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="LicenseServerBL.Models.Review">
+    <Position X="11.25" Y="15.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAggAAAgAAAAAAAAAAAAAAAAAAAAAAEAAQAAAAABA=</HashCode>
+      <FileName>Models\Review.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="InstructorReviews" />
+      <Property Name="Lessons" />
+      <Property Name="StudentSummaries" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="LicenseServerBL.Models.StudentSummary">
+    <Position X="6" Y="15.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAEAAAAAACAAAAAAAAAAAEACAAAACAAA=</HashCode>
+      <FileName>Models\StudentSummary.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Lesson" />
+      <Property Name="Review" />
+      <Property Name="Student" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="LicenseServerBL.Models.User" Collapsed="true">
+    <Position X="12.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAACAAAACAAQAAQAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LicenseServerBL.Models.WorkingHour" Collapsed="true">
+    <Position X="12.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\WorkingHour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LicenseServerBL.Models.EnrollmentRequest">
+    <Position X="3.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAMQAAAgEAAAAAACAAAACAAAAgAQAQAAAACAAA=</HashCode>
+      <FileName>Models\EnrollmentRequest.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Instructor" />
+      <Property Name="Lesson" />
+      <Property Name="School" />
+      <Property Name="Status" />
+      <Property Name="Student" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

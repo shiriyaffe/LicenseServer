@@ -521,16 +521,8 @@ VALUES (N'שירה יוסוב', N's@u.com', N'123456', N'0522394165',1, CAST(N'2
 INSERT INTO EnrollmentRequests([InstructorID],[StudentID],[StatusID])
 VALUES (1,2,1);
 
+Insert INTO Lesson([HasDone],[InstructorID],[IsPaid],[LDate],[LDay],[StuudentID],[IsAvailable],[eStatusId],[LTime])
+VALUES (1, 1, 0, CAST(N'2022-05-27' AS Date), N'שישי', 1, 0 ,2, N'10:00');
 
 Insert INTO Lesson([HasDone],[InstructorID],[IsPaid],[LDate],[LDay],[StuudentID],[IsAvailable],[eStatusId],[LTime])
-VALUES (1, 1, 0, CAST(N'2022-05-27' AS Date), N'שישי', 1, 0 ,1, N'10:00');
-
-UPDATE Student
-SET Email = '6363shiri@gmail.com'
-WHERE StudentID = 1;
-
-select * from Student;
-
-UPDATE Lesson
-SET HasDone = 0
-WHERE LessonID = 1;
+VALUES (0, 1, 0, CAST(N'2022-06-20' AS Date), N'שני', 1, 0 ,1, N'14:00');

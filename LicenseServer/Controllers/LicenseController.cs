@@ -30,13 +30,6 @@ namespace LicenseServer.Controllers
         private const int APPROVED_STATUS = 2;
         private const int DENIED_STATUS = 3;
 
-        [Route("SayHello")]
-        [HttpGet]
-        public string SayHello()
-        {
-            return "Hello World";
-        }
-
         [Route("Login")]
         [HttpGet]
         public Object Login([FromQuery] string email, [FromQuery] string pass)
