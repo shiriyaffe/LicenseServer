@@ -53,6 +53,33 @@ namespace LicenseServer.Controllers
             }
         }
 
+        [Route("Logout")]
+        [HttpPost]
+        public bool Logout([FromBody] Object user)
+        {
+            try
+            {
+                Object current = HttpContext.Session.GetObject<Object>("theUser");
+
+                if (current != null)
+                {
+                    HttpContext.Session.Remove("theUser");
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                    return true;
+                }
+                else
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                    return false;
+                }
+            }
+            catch
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                return false;
+            }
+        }
+
         [Route("SignUpStudent")]
         [HttpPost]
         public Student SignUpStudent([FromBody] Student student)
@@ -107,13 +134,6 @@ namespace LicenseServer.Controllers
 
                 Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
                 return updatedStudent;
-
-                ////Now check if an image exist for the contact (photo). If not, set the default image!
-                //var sourcePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", DEFAULT_PHOTO);
-                //var targetPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", $"{user.Id}.jpg");
-                //System.IO.File.Copy(sourcePath, targetPath);
-
-                //return the contact with its new ID if that was a new contact
             }
             else
             {
@@ -607,7 +627,7 @@ namespace LicenseServer.Controllers
 
         public async Task<IActionResult> UploadImage(IFormFile file)
         {
-            User user = HttpContext.Session.GetObject<User>("theUser");
+            Object user = HttpContext.Session.GetObject<Object>("theUser");
             //Check if user logged in and its ID is the same as the contact user ID
             if (user != null)
             {
@@ -720,7 +740,7 @@ namespace LicenseServer.Controllers
         {
             try
             {
-                User user = HttpContext.Session.GetObject<User>("theUser");
+                Object user = HttpContext.Session.GetObject<Object>("theUser");
 
                 if (user != null)
                 {
@@ -760,7 +780,7 @@ namespace LicenseServer.Controllers
         {
             try
             {
-                User user = HttpContext.Session.GetObject<User>("theUser");
+                Object user = HttpContext.Session.GetObject<Object>("theUser");
 
                 if (user != null)
                 {
@@ -1141,7 +1161,7 @@ namespace LicenseServer.Controllers
         {
             try
             {
-                User user = HttpContext.Session.GetObject<User>("theUser");
+                Object user = HttpContext.Session.GetObject<Object>("theUser");
 
                 if (user != null)
                 {
