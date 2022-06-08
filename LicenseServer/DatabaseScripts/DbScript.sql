@@ -111,7 +111,7 @@ CREATE TABLE Instructor(
 	CONSTRAINT FK_EnrollmentRequestsLessonLength FOREIGN KEY(LessonLengthID) REFERENCES LessonLength(LessonLengthID),
     Price INT NOT NULL,
     Details NVARCHAR(255),
-    DrivingSchoolID INT NOT NULL,
+    DrivingSchoolID INT NULL,
     CONSTRAINT FK_InstructorDrivingSchools FOREIGN KEY (DrivingSchoolID) REFERENCES DrivingSchools(SchoolID),
     SchoolManagerID INT,
 	CONSTRAINT FK_InstructorSchoolManager FOREIGN KEY(SchoolManagerID) REFERENCES SchoolManager(SManagerID),
@@ -120,7 +120,7 @@ CREATE TABLE Instructor(
     EndTime NVARCHAR(255) NOT NULL,
     eStatusId int NOT NULL,
     CONSTRAINT FK_InstructorEStatus FOREIGN KEY(eStatusId) REFERENCES EStatus(StatusID),
-    RateID int,
+    RateID int null,
     CONSTRAINT FK_InstructorRate FOREIGN KEY(RateID) REFERENCES Rate(RateID)
 );
 
@@ -501,7 +501,7 @@ INSERT INTO DrivingSchools([SchoolName],[AreaID],[EstablishmentYear],[NumOfTeach
 VALUES (N'GalDa',3,2017,18);
 
 INSERT INTO SchoolManager([SMName],[SchoolID],[RegistrationDate],[PhoneNumber],[Pass],[GenderID],[Email],[Birthday], [eStatusId])
-VALUES (N'גל דודזון',1,CAST(N'2021-1-10 12:23:00.000' AS DateTime),0545403304,13579,1,N'g@d.com',CAST(N'1950-08-13' AS Date),2);
+VALUES (N'גל דודזון',1,CAST(N'2021-1-10 12:23:00.000' AS DateTime),N'0545403304',13579,1,N'g@d.com',CAST(N'1950-08-13' AS Date),2);
 
 Insert INTO Instructor([IName],[Email],[Pass],[PhoneNumber],[GenderID],[Birthday],[AreaID],[Details],[DrivingSchoolID],[GearboxID],[LessonLengthID],[LicenseTypeID],[Price],[RateID],[RegistrationDate],[SchoolManagerID],[StartTime],[EndTime],[eStatusId])
 VALUES (N'נוי גנור', N'n@g.com', N'24680', N'0505689857',1, CAST(N'1954-08-24' AS Date), 3, N'התחלתי ללמד נהיגה לפני 15 שנה, כאשר 5 מתוכם בבית הספר לנהיגה הנוכחי. פנויה לתלמידים חדשים', 1, 1,3,1,200, 4, CAST(N'2021-1-17 8:23:00.000' AS DateTime),1,N'07:00',N'20:00', 2);
@@ -515,8 +515,8 @@ VALUES (N'שירי יפה', N's@y.com', N'123456', N'0534261684',1, CAST(N'2004-
 INSERT INTO EnrollmentRequests([InstructorID],[SchoolID],[StatusID])
 VALUES (2,1,1);
 
-Insert INTO Student([SName],[Email], [Pass],[PhoneNumber], [GenderID], [Birthday], [CityID], [SAddress], [GearboxID], [LicenseTypeID], [TeacherGender], [HighestPrice], [LessonsCount], [RegistrationDate], [LessonLengthID],[eStatusId])
-VALUES (N'שירה יוסוב', N's@u.com', N'123456', N'0522394165',1, CAST(N'2004-04-04' AS Date), 20, N'האירוס 2', 1, 1, 1, 200, 0, CAST(N'2022-05-30 8:23:00.000' AS DateTime), 3, 1);
+Insert INTO Student([SName],[Email], [Pass],[PhoneNumber], [GenderID], [Birthday], [CityID], [SAddress], [GearboxID], [LicenseTypeID], [TeacherGender], [HighestPrice], [LessonsCount], [RegistrationDate], [LessonLengthID],[eStatusId], [InstructorID])
+VALUES (N'שירה יוסוב', N's@u.com', N'123456', N'0522394165',1, CAST(N'2004-04-04' AS Date), 20, N'האירוס 2', 1, 1, 1, 200, 0, CAST(N'2022-05-30 8:23:00.000' AS DateTime), 3, 1, 1);
 
 INSERT INTO EnrollmentRequests([InstructorID],[StudentID],[StatusID])
 VALUES (1,2,1);

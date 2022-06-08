@@ -251,7 +251,7 @@ namespace LicenseServerBL.Models
             try
             {
                 instructor.SchoolManagerId = null;
-                instructor.DrivingSchoolId = 0;
+                instructor.DrivingSchoolId = null;
 
                 this.SaveChanges();
                 return instructor;
@@ -378,7 +378,7 @@ namespace LicenseServerBL.Models
                     teacher.EStatusId = i.EStatusId;
                     if (i.EStatusId == APPROVED)
                     {
-                        int managerId = GetManagerID(i.DrivingSchoolId);
+                        int managerId = GetManagerID((int)i.DrivingSchoolId);
                         teacher.SchoolManagerId = managerId;
                     }
                     this.Instructors.Update(teacher);

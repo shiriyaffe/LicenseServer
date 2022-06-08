@@ -581,7 +581,7 @@ namespace LicenseServer.Controllers
             return students;
         }
 
-        [Route("GetAllWaitingStudentsByInstructor")]
+        [Route("GetWaitingStudentsByInstructor")]
         [HttpGet]
         public ObservableCollection<Student> GetWaitingStudentsByInstructor([FromQuery] int instructorId)
         {
@@ -684,9 +684,9 @@ namespace LicenseServer.Controllers
 
         [Route("DeleteInstructor")]
         [HttpGet]
-        public Instructor DeleteInstructor([FromQuery] int instructortId)
+        public Instructor DeleteInstructor([FromQuery] int instructorId)
         {
-            Instructor instructor = context.Instructors.Where(i => i.InstructorId == instructortId).FirstOrDefault();
+            Instructor instructor = context.Instructors.Where(i => i.InstructorId == instructorId).FirstOrDefault();
 
             //If user is null the request is bad
             if (instructor == null)
