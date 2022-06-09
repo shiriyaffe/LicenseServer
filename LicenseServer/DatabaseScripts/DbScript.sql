@@ -526,3 +526,9 @@ VALUES (1, 1, 0, CAST(N'2022-05-27' AS Date), N'שישי', 1, 0 ,2, N'10:00');
 
 Insert INTO Lesson([HasDone],[InstructorID],[IsPaid],[LDate],[LDay],[StuudentID],[IsAvailable],[eStatusId],[LTime])
 VALUES (0, 1, 0, CAST(N'2022-06-20' AS Date), N'שני', 1, 0 ,1, N'14:00');
+
+select * from Instructor;
+
+update Student
+set InstructorID = 1
+where StudentID = 2;
