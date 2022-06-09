@@ -612,6 +612,7 @@ namespace LicenseServer.Controllers
                 Status = context.Estatuses.ToList(),
                 WorkingHours = context.WorkingHours.ToList()
             };
+
             return tables;
         }
 
@@ -1191,6 +1192,20 @@ namespace LicenseServer.Controllers
                 Console.WriteLine(e.Message);
                 return false;
             }
+        }
+
+        [Route("SetLessonsCount")]
+        [HttpGet]
+        public bool SetLessonsCount()
+        {
+             return this.context.SetLessonsCount();
+        }
+
+        [Route("SetPastLessons")]
+        [HttpGet]
+        public bool SetPastLessons()
+        {
+            return this.context.SetPastLessons();
         }
     }
 }

@@ -314,7 +314,7 @@ namespace LicenseServerBL.Models
         public ObservableCollection<Student> GetAllStudents()
         {
             ObservableCollection<Student> students = new ObservableCollection<Student>();
-            foreach(Student s in this.Students.Include(p => p.Instructor))
+            foreach(Student s in this.Students.Include(p => p.Instructor).Include(st=> st.Lessons))
             {
                 students.Add(s);
             }
@@ -541,6 +541,79 @@ namespace LicenseServerBL.Models
                 this.Instructors.Update(instructor);
 
                 this.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public bool SetLessonsCount()
+        {
+            try
+            {
+                List<Student> allStudents = new List<Student>();
+                foreach(Student s in this.Students.Include(st => st.Lessons))
+                {
+                    allStudents.Add(s);
+                }
+
+                int count = 0;
+
+                foreach(Student st in allStudents)
+                {
+                    foreach(Lesson l in st.Lessons)
+                    {
+                        if (l.HasDone)
+                            count++;
+                    }
+
+                    Student student = new Student();
+                    student = this.Students.Where(stu => stu.StudentId == st.StudentId).FirstOrDefault();
+                    student.LessonsCount = count;
+                    this.Students.Update(student);
+
+                    SaveChanges();
+                    count = 0;
+                }
+
+                return true;
+            }
+            
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public bool SetPastLessons()
+        {
+            try
+            {
+                List<Lesson> allLessons = new List<Lesson>();
+                foreach(Lesson l in this.Lessons)
+                {
+                    if(l.EStatusId == APPROVED)
+                    {
+                        allLessons.Add(l);
+                    }
+                }
+
+                Lesson lesson = new Lesson();
+                foreach(Lesson l in allLessons)
+                {
+                    if(DateTime.Compare(l.Ldate, DateTime.Today) < 0 && !l.HasDone)
+                    {
+                        lesson = this.Lessons.Where(les => les.LessonId == l.LessonId).FirstOrDefault();
+                        lesson.HasDone = true;
+                        this.Lessons.Update(lesson);
+                        SaveChanges();
+                    }
+                }
+
                 return true;
             }
             catch (Exception e)
